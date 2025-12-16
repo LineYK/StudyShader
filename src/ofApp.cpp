@@ -2,7 +2,9 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+	triangle.addVertex(glm::vec3(0, 0, 0));
+	triangle.addVertex(glm::vec3(0, 768.0, 0));
+	triangle.addVertex(glm::vec3(1024.0, 768, 0));
 }
 
 //--------------------------------------------------------------
@@ -12,12 +14,13 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+	triangle.draw();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	glm::vec3 curPos = triangle.getVertex(2);
+	triangle.setVertex(2, curPos + glm::vec3(0, -20, 0));
 }
 
 //--------------------------------------------------------------
