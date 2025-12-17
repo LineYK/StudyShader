@@ -361,3 +361,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# allow shader files in bin/data
+
+![Bb]in/data/
+
+[Bb]in/data/*
+
+![Bb]in/data/*.vert
+![Bb]in/data/*.frag

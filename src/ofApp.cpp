@@ -2,9 +2,10 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	triangle.addVertex(glm::vec3(0, 0, 0));
-	triangle.addVertex(glm::vec3(0, 768.0, 0));
-	triangle.addVertex(glm::vec3(1024.0, 768, 0));
+	triangle.addVertex(glm::vec3(-1.0f, 1.0f, 0.0f));
+	triangle.addVertex(glm::vec3(-1.0f, -1.0f, 0.0f));
+	triangle.addVertex(glm::vec3(1.0f, -1.0f, 0.0f));
+	shader.load("first_vertex.vert", "first_fragment.frag");
 }
 
 //--------------------------------------------------------------
@@ -14,7 +15,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	shader.begin();
 	triangle.draw();
+	shader.end();
 }
 
 //--------------------------------------------------------------
