@@ -1,5 +1,7 @@
 #include "ofApp.h"
 
+glm::vec4 fragCol = glm::vec4(1.0, 0.0, 0.0, 1.0);
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	triangle.addVertex(glm::vec3(-1.0f, 1.0f, 0.0f));
@@ -19,6 +21,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	shader.begin();
+	shader.setUniform4f("fragCol", fragCol);
 	triangle.draw();
 	shader.end();
 }
@@ -46,7 +49,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+	fragCol = glm::vec4(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0), 1.0);
 }
 
 //--------------------------------------------------------------
