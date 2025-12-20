@@ -1,16 +1,8 @@
 #include "ofApp.h"
 
-glm::vec4 fragCol = glm::vec4(1.0, 0.0, 0.0, 1.0);
-
 //--------------------------------------------------------------
 void ofApp::setup(){
-	triangle.addVertex(glm::vec3(-1.0f, 1.0f, 0.0f));
-	triangle.addVertex(glm::vec3(-1.0f, -1.0f, 0.0f));
-	triangle.addVertex(glm::vec3(1.0f, -1.0f, 0.0f));
-	triangle.addColor(ofFloatColor(1.0f, 0.0f, 0.0f, 1.0f));
-	triangle.addColor(ofFloatColor(0.0f, 1.0f, 0.0f, 1.0f));
-	triangle.addColor(ofFloatColor(0.0f, 0.0f, 1.0f, 1.0f));
-	shader.load("first_vertex.vert", "first_fragment.frag");
+
 }
 
 //--------------------------------------------------------------
@@ -20,16 +12,12 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	shader.begin();
-	shader.setUniform4f("fragCol", fragCol);
-	triangle.draw();
-	shader.end();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	glm::vec3 curPos = triangle.getVertex(2);
-	triangle.setVertex(2, curPos + glm::vec3(0, -20, 0));
+
 }
 
 //--------------------------------------------------------------
@@ -49,7 +37,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-	fragCol = glm::vec4(ofRandom(1.0), ofRandom(1.0), ofRandom(1.0), 1.0);
+
 }
 
 //--------------------------------------------------------------
