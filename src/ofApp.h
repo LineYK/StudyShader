@@ -4,6 +4,9 @@
 
 class ofApp : public ofBaseApp{
 
+	ofMesh quad;
+	ofShader shader;
+
 	public:
 		void setup();
 		void update();

@@ -27,7 +27,7 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
+# [Bb]in/
 [Oo]bj/
 [Oo]ut/
 [Ll]og/
@@ -362,11 +362,12 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# allow shader files in bin/data
-
-![Bb]in/data/
-
+# Ignore all files in bin/data by default
+[Bb]in/*.dll
+[Bb]in/*.exe
+[Bb]in/*.exp
+[Bb]in/*.lib
 [Bb]in/data/*
-
+# Allow only shader files (.vert and .frag) in bin/data
 ![Bb]in/data/*.vert
 ![Bb]in/data/*.frag
