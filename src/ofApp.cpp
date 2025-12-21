@@ -21,6 +21,9 @@ void ofApp::setup(){
 	quad.addIndices(indices, 6);
 
 	shader.load("uv_passthroungh.vert", "uv_vis.frag");
+
+	ofDisableArbTex();
+	img.load("parrot.png");
 }
 
 //--------------------------------------------------------------
@@ -31,6 +34,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	shader.begin();
+	shader.setUniformTexture("parrotTex", img, 0);
 	quad.draw();
 	shader.end();
 }

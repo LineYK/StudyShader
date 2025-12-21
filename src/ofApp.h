@@ -4,10 +4,12 @@
 
 class ofApp : public ofBaseApp{
 
-	ofMesh quad;
-	ofShader shader;
-
 	public:
+
+		ofMesh quad;
+		ofShader shader;
+		ofImage img;
+
 		void setup();
 		void update();
 		void draw();
