@@ -371,3 +371,4 @@ FodyWeavers.xsd
 # Allow only shader files (.vert and .frag) in bin/data
 ![Bb]in/data/*.vert
 ![Bb]in/data/*.frag
+![Bb]in/data/*.png
