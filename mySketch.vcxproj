@@ -201,6 +201,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\data\colormath.frag" />
     <None Include="bin\data\scrolling_uv.vert" />
     <None Include="bin\data\uv_passthroungh.vert" />
     <None Include="bin\data\uv_vis.frag" />

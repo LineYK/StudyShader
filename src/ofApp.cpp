@@ -20,7 +20,7 @@ void ofApp::setup(){
 	ofIndexType indices[6] = { 0, 1, 2, 2, 3, 0 };
 	quad.addIndices(indices, 6);
 
-	shader.load("scrolling_uv.vert", "uv_vis.frag");
+	shader.load("scrolling_uv.vert", "colormath.frag");
 
 	ofDisableArbTex();
 	img.load("parrot.png");
@@ -39,8 +39,8 @@ void ofApp::update(){
 void ofApp::draw(){
 	shader.begin();
 	shader.setUniformTexture("parrotTex", img, 0);
-	shader.setUniform1f("time", ofGetElapsedTimef());
-	shader.setUniform1f("brightness", brightness);
+	shader.setUniform4f("add", glm::vec4(0, 0.3, 0, 0));
+	shader.setUniform4f("multiply", glm::vec4(0.5, 1, 1, 1));
 	quad.draw();
 	shader.end();
 }
