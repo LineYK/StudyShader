@@ -25,6 +25,9 @@ void ofApp::setup(){
 	ofDisableArbTex();
 	img.load("parrot.png");
 	img.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+	ofDisableAlphaBlending();
+
+	brightness = 2.0f;
 }
 
 //--------------------------------------------------------------
@@ -37,6 +40,7 @@ void ofApp::draw(){
 	shader.begin();
 	shader.setUniformTexture("parrotTex", img, 0);
 	shader.setUniform1f("time", ofGetElapsedTimef());
+	shader.setUniform1f("brightness", brightness);
 	quad.draw();
 	shader.end();
 }
