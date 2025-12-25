@@ -8,7 +8,8 @@ class ofApp : public ofBaseApp{
 
 		ofMesh quad;
 		ofShader shader;
-		ofImage img;
+		ofImage parrotImg;
+		ofImage checkerImg;
 		float brightness;
 
 		void setup();

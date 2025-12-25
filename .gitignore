@@ -372,3 +372,4 @@ FodyWeavers.xsd
 ![Bb]in/data/*.vert
 ![Bb]in/data/*.frag
 ![Bb]in/data/*.png
+![Bb]in/data/*.jpg

@@ -20,14 +20,12 @@ void ofApp::setup(){
 	ofIndexType indices[6] = { 0, 1, 2, 2, 3, 0 };
 	quad.addIndices(indices, 6);
 
-	shader.load("scrolling_uv.vert", "colormath.frag");
+	shader.load("uv_passthroungh.vert", "blendtextures.frag");
 
 	ofDisableArbTex();
-	img.load("parrot.png");
-	img.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
-	ofDisableAlphaBlending();
+	parrotImg.load("parrot.png");
+	checkerImg.load("checker.jpg");
 
-	brightness = 2.0f;
 }
 
 //--------------------------------------------------------------
@@ -38,9 +36,8 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	shader.begin();
-	shader.setUniformTexture("parrotTex", img, 0);
-	shader.setUniform4f("add", glm::vec4(0, 0.3, 0, 0));
-	shader.setUniform4f("multiply", glm::vec4(0.5, 1, 1, 1));
+	shader.setUniformTexture("parrotTex", parrotImg, 0);
+	shader.setUniformTexture("checkerboardTex", checkerImg, 1);
 	quad.draw();
 	shader.end();
 }
