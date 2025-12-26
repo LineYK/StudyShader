@@ -3,12 +3,11 @@
 
 //========================================================================
 int main( ){
-	ofGLWindowSettings glSettings;
-	glSettings.setSize(1024, 768); //was 748 vertical
-	glSettings.windowMode = OF_WINDOW;
-	glSettings.setGLVersion(4, 1);
-	ofCreateWindow(glSettings);
+	ofSetupOpenGL(1024,768,OF_WINDOW);			// <-------- setup the GL context
 
-	printf("%s\n", glGetString(GL_VERSION));
+	// this kicks off the running of my app
+	// can be OF_WINDOW or OF_FULLSCREEN
+	// pass in width and height too:
 	ofRunApp(new ofApp());
+
 }

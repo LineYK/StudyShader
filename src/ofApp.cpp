@@ -2,29 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	quad.addVertex(glm::vec3(-1.0, -1.0, 0.0));
-	quad.addVertex(glm::vec3(-1.0, 1.0, 0.0));
-	quad.addVertex(glm::vec3(1.0, 1.0, 0.0));
-	quad.addVertex(glm::vec3(1.0, -1.0, 0.0));
-
-	quad.addColor(ofDefaultColorType(1, 0, 0, 1)); // »¡°­
-	quad.addColor(ofDefaultColorType(0, 1, 0, 1)); // ÃÊ·Ï
-	quad.addColor(ofDefaultColorType(0, 0, 1, 1)); // ÆÄ¶û
-	quad.addColor(ofDefaultColorType(1, 1, 1, 1)); // ÇÏ¾ç
-
-	quad.addTexCoord(glm::vec2(0.0, 0.0));
-	quad.addTexCoord(glm::vec2(0.0, 1.0));
-	quad.addTexCoord(glm::vec2(1.0, 1.0));
-	quad.addTexCoord(glm::vec2(1.0, 0.0));
-
-	ofIndexType indices[6] = { 0, 1, 2, 2, 3, 0 };
-	quad.addIndices(indices, 6);
-
-	shader.load("uv_passthroungh.vert", "blendtextures.frag");
-
-	ofDisableArbTex();
-	parrotImg.load("parrot.png");
-	checkerImg.load("checker.jpg");
 
 }
 
@@ -35,11 +12,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	shader.begin();
-	shader.setUniformTexture("parrotTex", parrotImg, 0);
-	shader.setUniformTexture("checkerboardTex", checkerImg, 1);
-	quad.draw();
-	shader.end();
+
 }
 
 //--------------------------------------------------------------

@@ -5,13 +5,6 @@
 class ofApp : public ofBaseApp{
 
 	public:
-
-		ofMesh quad;
-		ofShader shader;
-		ofImage parrotImg;
-		ofImage checkerImg;
-		float brightness;
-
 		void setup();
 		void update();
 		void draw();
