@@ -36,5 +36,7 @@
     <None Include="bin\data\scrolling_uv.vert" />
     <None Include="bin\data\colormath.frag" />
     <None Include="bin\data\blendtextures.frag" />
+    <None Include="bin\data\passthrough.vert" />
+    <None Include="bin\data\alphaTest.frag" />
   </ItemGroup>
 </Project>
