@@ -6,8 +6,10 @@ class ofApp : public ofBaseApp{
 
 	public:
 		ofMesh charMesh;
-		ofShader charShader;
+		ofMesh backgroundMesh;
+		ofShader shader;
 		ofImage alienImg;
+		ofImage backgroundImg;
 
 		void setup();
 		void update();
