@@ -203,6 +203,7 @@
   <ItemGroup>
     <None Include="bin\data\alphaTest.frag" />
     <None Include="bin\data\blendtextures.frag" />
+    <None Include="bin\data\cloud.frag" />
     <None Include="bin\data\colormath.frag" />
     <None Include="bin\data\passthrough.vert" />
     <None Include="bin\data\scrolling_uv.vert" />

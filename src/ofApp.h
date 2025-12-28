@@ -7,9 +7,12 @@ class ofApp : public ofBaseApp{
 	public:
 		ofMesh charMesh;
 		ofMesh backgroundMesh;
+		ofMesh cloudMesh;
 		ofShader shader;
+		ofShader cloudShader;
 		ofImage alienImg;
 		ofImage backgroundImg;
+		ofImage cloudeImg;
 
 		void setup();
 		void update();

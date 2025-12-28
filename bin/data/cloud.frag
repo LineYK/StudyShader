@@ -7,5 +7,5 @@ out vec4 outCol;
 
 void main() {
 	outCol = texture(tex, fragUV);
-	if (outCol.a < 0.9) discard;
+	if (outCol.a > 0.8) outCol.a = 0.8;
 }
