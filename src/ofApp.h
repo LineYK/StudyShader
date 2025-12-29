@@ -8,11 +8,15 @@ class ofApp : public ofBaseApp{
 		ofMesh charMesh;
 		ofMesh backgroundMesh;
 		ofMesh cloudMesh;
+		ofMesh sunMesh;
+
 		ofShader shader;
 		ofShader cloudShader;
+
 		ofImage alienImg;
 		ofImage backgroundImg;
 		ofImage cloudeImg;
+		ofImage sunImg;
 
 		void setup();
 		void update();

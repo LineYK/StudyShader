@@ -37,10 +37,12 @@ void ofApp::setup(){
 	buildMesh(charMesh, 0.1, 0.2, glm::vec3(0, -0.25, 0));
 	buildMesh(backgroundMesh, 1.0, 1.0, glm::vec3(0, 0, 0.5));
 	buildMesh(cloudMesh, 0.25, 0.16, glm::vec3(-0.55, 0, 0.0)); 
+	buildMesh(sunMesh, 1.0, 1.0, glm::vec3(0.0, 0.0, 0.4));
 
 	alienImg.load("alien.png");
 	backgroundImg.load("forest.png");
 	cloudeImg.load("cloud.png");
+	sunImg.load("sun.png");
 
 	shader.load("passthrough.vert", "alphaTest.frag");
 	cloudShader.load("passthrough.vert", "cloud.frag");
@@ -54,6 +56,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	ofDisableBlendMode();
+	ofEnableDepthTest();
+
 	shader.begin();
 
 	shader.setUniformTexture("tex", alienImg, 0);
@@ -64,11 +69,19 @@ void ofApp::draw(){
 
 	shader.end();
 
+	ofDisableDepthTest();
+	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ALPHA);
+
 	cloudShader.begin();
 	cloudShader.setUniformTexture("tex", cloudeImg, 0);
 	cloudMesh.draw();
-	cloudShader.end();
+	
+	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
 
+	cloudShader.setUniformTexture("tex", sunImg, 0);
+	sunMesh.draw();
+
+	cloudShader.end();
 }
 
 //--------------------------------------------------------------
