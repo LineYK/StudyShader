@@ -19,6 +19,9 @@ class ofApp : public ofBaseApp{
 		ofImage cloudeImg;
 		ofImage sunImg;
 
+		bool walkRight;
+		glm::vec3 charPos;
+
 		void setup();
 		void update();
 		void draw();

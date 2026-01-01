@@ -52,7 +52,10 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+	if (walkRight) {
+		float speed = 0.4 * ofGetLastFrameTime();
+		charPos += glm::vec3(speed, 0, 0);
+	}
 }
 
 //--------------------------------------------------------------
@@ -70,6 +73,7 @@ void ofApp::draw(){
 	spritesheetShader.setUniformTexture("tex", alienImg, 0);
 	spritesheetShader.setUniform2f("size", spriteSize);
 	spritesheetShader.setUniform2f("offset", spriteOffset);
+	spritesheetShader.setUniform3f("translation", charPos);
 	charMesh.draw();
 	spritesheetShader.end();
 
@@ -96,16 +100,17 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	int numVerts = charMesh.getNumVertices();
-	for (int i = 0; i < numVerts; i++) {
-		charMesh.setVertex(i, charMesh.getVertex(i) + glm::vec3(0.2f, 0.0f, 0.0f));
+	if (key == ofKey::OF_KEY_RIGHT) {
+		walkRight = true;
 	}
 
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+	if (key == ofKey::OF_KEY_RIGHT) {
+		walkRight = false;
+	}
 }
 
 //--------------------------------------------------------------
