@@ -36,7 +36,7 @@ void ofApp::setup(){
 
 	buildMesh(charMesh, 0.1, 0.2, glm::vec3(0, -0.25, 0));
 	buildMesh(backgroundMesh, 1.0, 1.0, glm::vec3(0, 0, 0.5));
-	buildMesh(cloudMesh, 0.25, 0.16, glm::vec3(-0.55, 0, 0.0)); 
+	buildMesh(cloudMesh, 0.25, 0.16, glm::vec3(0.0, 0, 0.0)); 
 	buildMesh(sunMesh, 1.0, 1.0, glm::vec3(0.0, 0.0, 0.4));
 
 	alienImg.load("walk_sheet.png");
@@ -45,7 +45,8 @@ void ofApp::setup(){
 	sunImg.load("sun.png");
 
 	shader.load("passthrough.vert", "alphaTest.frag");
-	cloudShader.load("passthrough.vert", "cloud.frag");
+	cloudShader.load("cloud.vert", "cloud.frag");
+	sunShader.load("passthrough.vert", "cloud.frag");
 	spritesheetShader.load("spritesheet.vert", "alphaTest.frag");
 
 }
@@ -89,13 +90,15 @@ void ofApp::draw(){
 	cloudShader.begin();
 	cloudShader.setUniformTexture("tex", cloudeImg, 0);
 	cloudMesh.draw();
+	cloudShader.end();
 	
 	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
 
-	cloudShader.setUniformTexture("tex", sunImg, 0);
+	sunShader.begin();
+	sunShader.setUniformTexture("tex", sunImg, 0);
 	sunMesh.draw();
+	sunShader.end();
 
-	cloudShader.end();
 }
 
 //--------------------------------------------------------------
