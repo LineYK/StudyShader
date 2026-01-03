@@ -89,15 +89,25 @@ void ofApp::draw(){
 
 	cloudShader.begin();
 	cloudShader.setUniformTexture("tex", cloudeImg, 0);
+
+	cloudShader.setUniform3f("scale", glm::vec3(1.5, 1.0, 1.0));
+	cloudShader.setUniform1f("rotation", 0.0f);
+	cloudShader.setUniform3f("translation", glm::vec3(-0.55, 0.0, 0.0));
 	cloudMesh.draw();
+
+	cloudShader.setUniform3f("scale", glm::vec3(1.0, 1.0, 1.0));
+	cloudShader.setUniform1f("rotation", 1.0f);
+	cloudShader.setUniform3f("translation", glm::vec3(0.4, 0.2, 0.0));
+	cloudMesh.draw();
+
 	cloudShader.end();
 	
-	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
+	//ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
 
-	sunShader.begin();
-	sunShader.setUniformTexture("tex", sunImg, 0);
-	sunMesh.draw();
-	sunShader.end();
+	//sunShader.begin();
+	//sunShader.setUniformTexture("tex", sunImg, 0);
+	//sunMesh.draw();
+	//sunShader.end();
 
 }
 
