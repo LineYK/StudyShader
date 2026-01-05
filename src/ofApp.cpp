@@ -96,13 +96,36 @@ void ofApp::draw(){
 	ofDisableDepthTest();
 	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ALPHA);
 
-	mat4 transformA = buildMatrix(glm::vec3(-0.55, 0.0, 0.0), 0.0f, glm::vec3(1.5, 1.0, 1.0));
+	static float rotation = 1.0f;
+	rotation += 1.0f * ofGetLastFrameTime();
+
+	mat4 translationA = translate(vec3(-0.55, 0.0, 0.0));
+	mat4 scaleA = scale(vec3(1.5, 1.0, 1.0));
+	mat4 transformA = translationA * scaleA;
+
+	mat4 ourRotation = rotate(rotation, vec3(0, 0, 1));
+	mat4 newMatrix = transformA * ourRotation * inverse(transformA);
+	mat4 finalMatrixA = newMatrix * transformA;
+	mat4 newMatrix2 = transformA * ourRotation;
 	mat4 transformB = buildMatrix(glm::vec3(0.4, 0.2, 0.0), 1.0f, glm::vec3(1.0, 1.0, 1.0));
+
+	mat4 S = scale(vec3(1.5, 1.0, 1.0));
+	mat4 T = translate(vec3(-0.55, 0.0, 0.0));
+	mat4 R = rotate(rotation, vec3(0, 0, 1));
+
+	// 이동만 되돌림
+	mat4 final =
+		T *
+		ourRotation *
+		inverse(T) *
+		T *
+		R *
+		S;
 
 	cloudShader.begin();
 	cloudShader.setUniformTexture("tex", cloudeImg, 0);
 
-	cloudShader.setUniformMatrix4f("transform", transformA);
+	cloudShader.setUniformMatrix4f("transform", final);
 	cloudMesh.draw();
 
 	cloudShader.setUniformMatrix4f("transform", transformB);
