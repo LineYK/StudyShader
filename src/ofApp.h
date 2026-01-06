@@ -22,6 +22,7 @@ class ofApp : public ofBaseApp{
 
 		bool walkRight;
 		glm::vec3 charPos;
+		glm::mat4 charTranslate;
 
 		void setup();
 		void update();

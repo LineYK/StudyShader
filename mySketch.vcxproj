@@ -210,7 +210,6 @@
     <None Include="bin\data\spritesheet.vert" />
     <None Include="bin\data\uv_passthroungh.vert" />
     <None Include="bin\data\uv_vis.frag" />
-    <None Include="bin\data\cloud.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

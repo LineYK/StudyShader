@@ -40,6 +40,8 @@ mat4 buildMatrix(glm::vec3 trans, float rot, glm::vec3 scale) {
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	charTranslate = mat4();
+
 	ofDisableArbTex();
 	ofEnableDepthTest();
 
@@ -54,7 +56,7 @@ void ofApp::setup(){
 	sunImg.load("sun.png");
 
 	shader.load("passthrough.vert", "alphaTest.frag");
-	cloudShader.load("cloud.vert", "cloud.frag");
+	cloudShader.load("passthrough.vert", "cloud.frag");
 	sunShader.load("passthrough.vert", "cloud.frag");
 	spritesheetShader.load("spritesheet.vert", "alphaTest.frag");
 
@@ -64,7 +66,8 @@ void ofApp::setup(){
 void ofApp::update(){
 	if (walkRight) {
 		float speed = 0.4 * ofGetLastFrameTime();
-		charPos += glm::vec3(speed, 0, 0);
+		charPos = vec3(speed, 0, 0);
+		charTranslate = charTranslate * translate(charPos);
 	}
 }
 
@@ -83,13 +86,14 @@ void ofApp::draw(){
 	spritesheetShader.setUniformTexture("tex", alienImg, 0);
 	spritesheetShader.setUniform2f("size", spriteSize);
 	spritesheetShader.setUniform2f("offset", spriteOffset);
-	spritesheetShader.setUniform3f("translation", charPos);
+	spritesheetShader.setUniformMatrix4f("transform", charTranslate);
 	charMesh.draw();
 	spritesheetShader.end();
 
 
 	shader.begin();
 	shader.setUniformTexture("tex", backgroundImg, 0);
+	shader.setUniformMatrix4f("transform", mat4());
 	backgroundMesh.draw();
 	shader.end();
 
