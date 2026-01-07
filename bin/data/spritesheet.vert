@@ -5,12 +5,13 @@ layout(location = 3) in vec2 uv;
 
 uniform vec2 size;
 uniform vec2 offset;
-uniform mat4 transform;
+uniform mat4 model;
+uniform mat4 view;
 
 out vec2 fragUV;
 
 void main()
 {
-	gl_Position = transform * vec4(pos, 1.0);
+	gl_Position = view * model * vec4(pos, 1.0);
 	fragUV = vec2(uv.x, 1.0 - uv.y) * size + (offset * size);
 }

@@ -38,6 +38,10 @@ mat4 buildMatrix(glm::vec3 trans, float rot, glm::vec3 scale) {
 	return translation * rotation * scaler;
 }
 
+mat4 buildViewMatrix(CameraData cam) {
+	return inverse(buildMatrix(cam.position, cam.rotation, glm::vec3(1, 1, 1)));
+}
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	charTranslate = mat4();
@@ -73,6 +77,8 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	cam.position = vec3(-1, 0, 0);
+	mat4 view = buildViewMatrix(cam);
 
 	static float frame = 0;
 	frame = (frame > 10) ? 0.0 : frame += 0.2;
@@ -84,16 +90,18 @@ void ofApp::draw(){
 
 	spritesheetShader.begin();
 	spritesheetShader.setUniformTexture("tex", alienImg, 0);
+	spritesheetShader.setUniformMatrix4f("view", view);
 	spritesheetShader.setUniform2f("size", spriteSize);
 	spritesheetShader.setUniform2f("offset", spriteOffset);
-	spritesheetShader.setUniformMatrix4f("transform", charTranslate);
+	spritesheetShader.setUniformMatrix4f("model", charTranslate);
 	charMesh.draw();
 	spritesheetShader.end();
 
 
 	shader.begin();
 	shader.setUniformTexture("tex", backgroundImg, 0);
-	shader.setUniformMatrix4f("transform", mat4());
+	shader.setUniformMatrix4f("view", view);
+	shader.setUniformMatrix4f("model", mat4());
 	backgroundMesh.draw();
 	shader.end();
 
@@ -129,10 +137,11 @@ void ofApp::draw(){
 	cloudShader.begin();
 	cloudShader.setUniformTexture("tex", cloudeImg, 0);
 
-	cloudShader.setUniformMatrix4f("transform", final);
+	cloudShader.setUniformMatrix4f("model", final);
+	cloudShader.setUniformMatrix4f("view", view);
 	cloudMesh.draw();
 
-	cloudShader.setUniformMatrix4f("transform", transformB);
+	cloudShader.setUniformMatrix4f("model", transformB);
 	cloudMesh.draw();
 
 	cloudShader.end();
