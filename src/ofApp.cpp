@@ -50,9 +50,9 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	buildMesh(charMesh, 0.1, 0.2, glm::vec3(0, -0.25, 0));
-	buildMesh(backgroundMesh, 1.0, 1.0, glm::vec3(0, 0, 0.5));
+	buildMesh(backgroundMesh, 1.0, 1.0, glm::vec3(0, 0, 0));
 	buildMesh(cloudMesh, 0.25, 0.16, glm::vec3(0.0, 0, 0.0)); 
-	buildMesh(sunMesh, 1.0, 1.0, glm::vec3(0.0, 0.0, 0.4));
+	buildMesh(sunMesh, 1.0, 1.0, glm::vec3(0.0, 0.0, 0.0));
 
 	alienImg.load("walk_sheet.png");
 	backgroundImg.load("forest.png");
@@ -77,8 +77,9 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	cam.position = vec3(-1, 0, 0);
+	cam.position = vec3(0, 0, 0);
 	mat4 view = buildViewMatrix(cam);
+	mat4 proj = ortho(-1.33f, 1.33f, -1.0f, 1.0f, 0.0f, 10.0f);
 
 	static float frame = 0;
 	frame = (frame > 10) ? 0.0 : frame += 0.2;
@@ -90,6 +91,7 @@ void ofApp::draw(){
 
 	spritesheetShader.begin();
 	spritesheetShader.setUniformTexture("tex", alienImg, 0);
+	spritesheetShader.setUniformMatrix4f("proj", proj);
 	spritesheetShader.setUniformMatrix4f("view", view);
 	spritesheetShader.setUniform2f("size", spriteSize);
 	spritesheetShader.setUniform2f("offset", spriteOffset);
@@ -100,8 +102,9 @@ void ofApp::draw(){
 
 	shader.begin();
 	shader.setUniformTexture("tex", backgroundImg, 0);
+	shader.setUniformMatrix4f("proj", proj);
 	shader.setUniformMatrix4f("view", view);
-	shader.setUniformMatrix4f("model", mat4());
+	shader.setUniformMatrix4f("model", translate(vec3(0,0,-0.05)));
 	backgroundMesh.draw();
 	shader.end();
 
@@ -136,9 +139,9 @@ void ofApp::draw(){
 
 	cloudShader.begin();
 	cloudShader.setUniformTexture("tex", cloudeImg, 0);
-
+	cloudShader.setUniformMatrix4f("proj", proj);
 	cloudShader.setUniformMatrix4f("model", final);
-	cloudShader.setUniformMatrix4f("view", view);
+	cloudShader.setUniformMatrix4f("view", view); 
 	cloudMesh.draw();
 
 	cloudShader.setUniformMatrix4f("model", transformB);
@@ -146,12 +149,15 @@ void ofApp::draw(){
 
 	cloudShader.end();
 	
-	//ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
+	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
 
-	//sunShader.begin();
-	//sunShader.setUniformTexture("tex", sunImg, 0);
-	//sunMesh.draw();
-	//sunShader.end();
+	sunShader.begin();
+	sunShader.setUniformTexture("tex", sunImg, 0);
+	sunShader.setUniformMatrix4f("proj", proj);
+	sunShader.setUniformMatrix4f("view", view);
+	sunShader.setUniformMatrix4f("model", mat4());
+	sunMesh.draw();
+	sunShader.end();
 
 }
 
