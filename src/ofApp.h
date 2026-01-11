@@ -2,35 +2,9 @@
 
 #include "ofMain.h"
 
-struct CameraData {
-	glm::vec3 position;
-	float rotation;
-};
-
 class ofApp : public ofBaseApp{
 
 	public:
-		ofMesh charMesh;
-		ofMesh backgroundMesh;
-		ofMesh cloudMesh;
-		ofMesh sunMesh;
-
-		ofShader shader;
-		ofShader cloudShader;
-		ofShader sunShader;
-		ofShader spritesheetShader;
-
-		ofImage alienImg;
-		ofImage backgroundImg;
-		ofImage cloudeImg;
-		ofImage sunImg;
-
-		bool walkRight;
-		glm::vec3 charPos;
-		glm::mat4 charTranslate;
-
-		CameraData cam;
-
 		void setup();
 		void update();
 		void draw();
