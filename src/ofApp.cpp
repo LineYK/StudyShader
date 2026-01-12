@@ -2,6 +2,10 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	ofDisableArbTex();
+	ofEnableDepthTest();
+
+	torusMesh.load("torusMesh.ply");
 
 }
 

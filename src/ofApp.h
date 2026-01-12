@@ -5,6 +5,9 @@
 class ofApp : public ofBaseApp{
 
 	public:
+		ofMesh torusMesh;
+		ofShader uvShader;
+
 		void setup();
 		void update();
 		void draw();
