@@ -1,12 +1,14 @@
 #include "ofApp.h"
 
+using namespace glm;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofDisableArbTex();
 	ofEnableDepthTest();
 
-	torusMesh.load("torusMesh.ply");
-
+	torusMesh.load("torus.ply");
+	uvShader.load("passthrough.vert", "uv_vis.frag");
 }
 
 //--------------------------------------------------------------
@@ -16,7 +18,10 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+	uvShader.begin();
+	uvShader.setUniformMatrix4f("mvp", mat4());
+	torusMesh.draw();
+	uvShader.end();
 }
 
 //--------------------------------------------------------------
