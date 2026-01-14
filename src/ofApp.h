@@ -2,11 +2,17 @@
 
 #include "ofMain.h"
 
+struct CameraData {
+	glm::vec3 pos;
+	float fov;
+};
+
 class ofApp : public ofBaseApp{
 
 	public:
 		ofMesh torusMesh;
 		ofShader uvShader;
+		CameraData cam;
 
 		void setup();
 		void update();

@@ -18,8 +18,19 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	cam.pos = vec3(0, 0, 1);
+	cam.fov = radians(100.0f);
+	float aspect = 1024.0f / 768.0f;
+
+	mat4 model = rotate(1.0f, vec3(1, 1, 1)) * scale(vec3(0.5, 0.5, 0.5));
+	mat4 view = inverse(translate(cam.pos));
+	mat4 proj = perspective(cam.fov, aspect, 0.1f, 10.0f);
+
+	mat4 mvp = proj * view * model;
+
+
 	uvShader.begin();
-	uvShader.setUniformMatrix4f("mvp", mat4());
+	uvShader.setUniformMatrix4f("mvp", mvp);
 	torusMesh.draw();
 	uvShader.end();
 }
