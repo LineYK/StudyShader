@@ -28,9 +28,11 @@ void ofApp::draw(){
 
 	mat4 mvp = proj * view * model;
 
+	mat3 normalMatrix = transpose(inverse(mat3(model)));
 
 	uvShader.begin();
 	uvShader.setUniformMatrix4f("mvp", mvp);
+	uvShader.setUniformMatrix3f("normal", normalMatrix);
 	torusMesh.draw();
 	uvShader.end();
 }
