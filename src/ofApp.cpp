@@ -2,49 +2,111 @@
 
 using namespace glm;
 
+vec3 getLightDirection(DirectionalLight& l) {
+	return normalize(l.direction * -1.0f);
+}
+
+vec3 gertLightColor(DirectionalLight& l) {
+	return l.color * l.intensity;
+}
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofDisableArbTex();
 	ofEnableDepthTest();
 
 	torusMesh.load("torus.ply");
-	uvShader.load("mesh.vert", "diffuse.frag");
+	diffuseShader.load("mesh.vert", "diffuse.frag");
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	if (isRIghtKeyPressed) {
+		rotationMatrix = rotate(rotationMatrix, radians(1.0f), vec3(0, 1, 0));
+	}
+
+	if (isLeftKeyPressed) {
+		rotationMatrix = rotate(rotationMatrix, radians(-1.0f), vec3(0, 1, 0));
+	}
+
+	if (isUpKeyPressed) {
+		rotationMatrix = rotate(rotationMatrix, radians(1.0f), vec3(1, 0, 0));
+	}
+
+	if (isDownKeyPressed) {
+		rotationMatrix = rotate(rotationMatrix, radians(-1.0f), vec3(1, 0, 0));
+	}
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	cam.pos = vec3(0, 0, 1);
+	cam.pos = vec3(0, 0.75f, 1);
+	float cAngle = radians(-45.0f);
+	vec3 right = vec3(1, 0, 0);
+
 	cam.fov = radians(100.0f);
 	float aspect = 1024.0f / 768.0f;
 
-	mat4 model = rotate(1.0f, vec3(1, 1, 1)) * scale(vec3(0.5, 0.5, 0.5));
-	mat4 view = inverse(translate(cam.pos));
+	mat4 view = inverse(translate(cam.pos) * rotate(cAngle, right));
+	mat4 model = rotate(radians(90.0f), right) * rotationMatrix * scale(vec3(0.5, 0.5, 0.5));
 	mat4 proj = perspective(cam.fov, aspect, 0.1f, 10.0f);
 
 	mat4 mvp = proj * view * model;
 
 	mat3 normalMatrix = transpose(inverse(mat3(model)));
 
-	uvShader.begin();
-	uvShader.setUniformMatrix4f("mvp", mvp);
-	uvShader.setUniformMatrix3f("normal", normalMatrix);
+	dirLight.direction = normalize(vec3(0, -1, 0));
+	dirLight.color = vec3(1, 1, 1);
+	dirLight.intensity = 1.0f;
+
+	diffuseShader.begin();
+	diffuseShader.setUniformMatrix4f("mvp", mvp);
+	diffuseShader.setUniformMatrix3f("normal", normalMatrix);
+	diffuseShader.setUniform3f("meshCol", vec3(1, 0, 0));
+	diffuseShader.setUniform3f("lightDir", getLightDirection(dirLight));
+	diffuseShader.setUniform3f("lightCol", gertLightColor(dirLight));
+
 	torusMesh.draw();
-	uvShader.end();
+	diffuseShader.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	if (key == ofKey::OF_KEY_RIGHT) {
+		isRIghtKeyPressed = TRUE;
+	}
+	else if (key == ofKey::OF_KEY_LEFT)
+	{
+		isLeftKeyPressed = TRUE;
+	}
+	else if (key == ofKey::OF_KEY_UP)
+	{
+		isUpKeyPressed = TRUE;
+	}
+	else if (key == ofKey::OF_KEY_DOWN)
+	{
+		isDownKeyPressed = TRUE;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+	if (key == ofKey::OF_KEY_RIGHT) {
+		isRIghtKeyPressed = FALSE;
+	}
+	else if (key == ofKey::OF_KEY_LEFT)
+	{
+		isLeftKeyPressed = FALSE;
+	}
+	else if (key == ofKey::OF_KEY_UP)
+	{
+		isUpKeyPressed = FALSE;
+	}
+	else if (key == ofKey::OF_KEY_DOWN)
+	{
+		isDownKeyPressed = FALSE;
+	}
 }
 
 //--------------------------------------------------------------

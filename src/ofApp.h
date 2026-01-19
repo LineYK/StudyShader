@@ -7,12 +7,25 @@ struct CameraData {
 	float fov;
 };
 
+struct DirectionalLight {
+	glm::vec3 direction;
+	glm::vec3 color;
+	float intensity;
+};
+
 class ofApp : public ofBaseApp{
 
 	public:
 		ofMesh torusMesh;
-		ofShader uvShader;
+		ofShader diffuseShader;
 		CameraData cam;
+		DirectionalLight dirLight;
+
+		glm::mat4 rotationMatrix = glm::mat4(1.0f);
+		BOOL isRIghtKeyPressed = FALSE;
+		BOOL isLeftKeyPressed = FALSE;
+		BOOL isUpKeyPressed = FALSE;
+		BOOL isDownKeyPressed = FALSE;
 
 		void setup();
 		void update();
