@@ -8,7 +8,7 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	torusMesh.load("torus.ply");
-	uvShader.load("mesh.vert", "normal_vis.frag");
+	uvShader.load("mesh.vert", "diffuse.frag");
 }
 
 //--------------------------------------------------------------
