@@ -6,7 +6,7 @@ vec3 getLightDirection(DirectionalLight& l) {
 	return normalize(l.direction * -1.0f);
 }
 
-vec3 gertLightColor(DirectionalLight& l) {
+vec3 getLightColor(DirectionalLight& l) {
 	return l.color * l.intensity;
 }
 
@@ -16,7 +16,7 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	torusMesh.load("torus.ply");
-	diffuseShader.load("mesh.vert", "diffuse.frag");
+	diffuseShader.load("mesh.vert", "rimlight.frag");
 }
 
 //--------------------------------------------------------------
@@ -61,12 +61,13 @@ void ofApp::draw(){
 	dirLight.intensity = 1.0f;
 
 	diffuseShader.begin();
+	diffuseShader.setUniformMatrix4f("model", model);
 	diffuseShader.setUniformMatrix4f("mvp", mvp);
 	diffuseShader.setUniformMatrix3f("normal", normalMatrix);
 	diffuseShader.setUniform3f("meshCol", vec3(1, 0, 0));
 	diffuseShader.setUniform3f("lightDir", getLightDirection(dirLight));
-	diffuseShader.setUniform3f("lightCol", gertLightColor(dirLight));
-
+	diffuseShader.setUniform3f("lightCol", getLightColor(dirLight));
+	diffuseShader.setUniform3f("cameraPos", cam.pos);
 	torusMesh.draw();
 	diffuseShader.end();
 }
