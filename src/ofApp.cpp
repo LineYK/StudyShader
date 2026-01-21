@@ -16,7 +16,7 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	torusMesh.load("torus.ply");
-	diffuseShader.load("mesh.vert", "rimlight.frag");
+	diffuseShader.load("mesh.vert", "specular.frag");
 }
 
 //--------------------------------------------------------------
@@ -63,11 +63,12 @@ void ofApp::draw(){
 	diffuseShader.begin();
 	diffuseShader.setUniformMatrix4f("model", model);
 	diffuseShader.setUniformMatrix4f("mvp", mvp);
-	diffuseShader.setUniformMatrix3f("normal", normalMatrix);
+	diffuseShader.setUniform3f("cameraPos", cam.pos);
+	diffuseShader.setUniform3f("meshSpecCol", vec3(1, 1, 1));
 	diffuseShader.setUniform3f("meshCol", vec3(1, 0, 0));
 	diffuseShader.setUniform3f("lightDir", getLightDirection(dirLight));
 	diffuseShader.setUniform3f("lightCol", getLightColor(dirLight));
-	diffuseShader.setUniform3f("cameraPos", cam.pos);
+	diffuseShader.setUniformMatrix3f("normal", normalMatrix);
 	torusMesh.draw();
 	diffuseShader.end();
 }
