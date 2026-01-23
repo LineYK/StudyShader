@@ -16,7 +16,7 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	torusMesh.load("torus.ply");
-	diffuseShader.load("mesh.vert", "specular.frag");
+	diffuseShader.load("mesh.vert", "phong.frag");
 }
 
 //--------------------------------------------------------------
@@ -69,6 +69,7 @@ void ofApp::draw(){
 	diffuseShader.setUniform3f("lightDir", getLightDirection(dirLight));
 	diffuseShader.setUniform3f("lightCol", getLightColor(dirLight));
 	diffuseShader.setUniformMatrix3f("normal", normalMatrix);
+	diffuseShader.setUniform3f("ambientCol", vec3(0.5, 0.5, 0.5));
 	torusMesh.draw();
 	diffuseShader.end();
 }
