@@ -16,7 +16,7 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	torusMesh.load("torus.ply");
-	diffuseShader.load("mesh.vert", "phong.frag");
+	diffuseShader.load("mesh.vert", "blinnphong.frag");
 }
 
 //--------------------------------------------------------------

@@ -40,5 +40,6 @@
     <None Include="bin\data\rimlight.frag" />
     <None Include="bin\data\specular.frag" />
     <None Include="bin\data\phong.frag" />
+    <None Include="bin\data\blinnphong.frag" />
   </ItemGroup>
 </Project>

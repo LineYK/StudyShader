@@ -199,6 +199,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\data\blinnphong.frag" />
     <None Include="bin\data\diffuse.frag" />
     <None Include="bin\data\mesh.vert" />
     <None Include="bin\data\normal_vis.frag" />
