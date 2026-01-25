@@ -17,9 +17,13 @@ class ofApp : public ofBaseApp{
 
 	public:
 		ofMesh torusMesh;
+		ofMesh shieldMesh;
 		ofShader diffuseShader;
 		CameraData cam;
 		DirectionalLight dirLight;
+
+		ofImage diffuseTex;
+		ofImage specTex;
 
 		glm::mat4 rotationMatrix = glm::mat4(1.0f);
 		BOOL isRIghtKeyPressed = FALSE;
