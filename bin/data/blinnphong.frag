@@ -7,15 +7,20 @@ uniform vec3 ambientCol;
 
 uniform sampler2D diffuseTex;
 uniform sampler2D specTex;
+uniform sampler2D normTex;
 
 in vec3 fragNrm;
 in vec3 fragWorldPos;
 in vec2 fragUV;
+in mat3 TBN;
 
 out vec4 outCol;
 
 void main() {
-	vec3 nrm = normalize(fragNrm);
+	vec3 nrm = texture(normTex, fragUV).rgb;
+	nrm = normalize(nrm * 2.0 - 1.0);
+	nrm = normalize(TBN * nrm);
+
 	vec3 toCam = normalize(cameraPos - fragWorldPos);
 	vec3 halfVec = normalize(lightDir + toCam);
 

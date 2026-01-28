@@ -18,6 +18,7 @@ void ofApp::setup(){
 	shieldMesh.load("shield.ply");
 	diffuseTex.load("shield_diffuse.png");
 	specTex.load("shield_spec.png");
+	normalTex.load("shield_normal.png");
 	diffuseShader.load("mesh.vert", "blinnphong.frag");
 }
 
@@ -63,7 +64,7 @@ void ofApp::draw(){
 
 	mat3 normalMatrix = transpose(inverse(mat3(model)));
 
-	dirLight.direction = normalize(vec3(0, -1, 0));
+	dirLight.direction = normalize(vec3(0.5, -1, 1));
 	dirLight.color = vec3(1, 1, 1);
 	dirLight.intensity = 1.0f;
 
@@ -77,6 +78,7 @@ void ofApp::draw(){
 	diffuseShader.setUniform3f("ambientCol", vec3(0.5, 0.5, 0.5));
 	diffuseShader.setUniformTexture("diffuseTex", diffuseTex, 0);
 	diffuseShader.setUniformTexture("specTex", specTex, 1);
+	diffuseShader.setUniformTexture("normTex", normalTex, 2);
 	shieldMesh.draw();
 	diffuseShader.end();
 }

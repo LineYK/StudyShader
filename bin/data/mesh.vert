@@ -12,12 +12,14 @@ uniform mat4 model;
 out vec3 fragNrm;
 out vec3 fragWorldPos;
 out vec2 fragUV;
+out mat3 TBN;
 
 void main()
 {
-	vec3 T = tan.xyz;
-	vec3 N = nrm.xyz;
-	vec3 B = cross(T, N);
+	vec3 T = normalize(normal * tan.xyz);
+	vec3 B = normalize(normal * cross(tan.xyz, nrm));
+	vec3 N = normalize(normal * nrm.xyz);
+	TBN = mat3(T, B, N);
 
 	fragUV = vec2(uv.x, 1.0 - uv.y);
 

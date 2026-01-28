@@ -24,6 +24,7 @@ class ofApp : public ofBaseApp{
 
 		ofImage diffuseTex;
 		ofImage specTex;
+		ofImage normalTex;
 
 		glm::mat4 rotationMatrix = glm::mat4(1.0f);
 		BOOL isRIghtKeyPressed = FALSE;
