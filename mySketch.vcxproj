@@ -209,6 +209,8 @@
     <None Include="bin\data\specular.frag" />
     <None Include="bin\data\torus.ply" />
     <None Include="bin\data\uv_vis.frag" />
+    <None Include="bin\data\water.frag" />
+    <None Include="bin\data\water.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

@@ -41,5 +41,7 @@
     <None Include="bin\data\specular.frag" />
     <None Include="bin\data\phong.frag" />
     <None Include="bin\data\blinnphong.frag" />
+    <None Include="bin\data\water.vert" />
+    <None Include="bin\data\water.frag" />
   </ItemGroup>
 </Project>

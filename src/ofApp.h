@@ -21,10 +21,12 @@ class ofApp : public ofBaseApp{
 		ofShader diffuseShader;
 		CameraData cam;
 		DirectionalLight dirLight;
+		DirectionalLight waterLight;
 
 		ofImage diffuseTex;
 		ofImage specTex;
 		ofImage normalTex;
+		ofImage waterNrm;
 
 		glm::mat4 rotationMatrix = glm::mat4(1.0f);
 		BOOL isRIghtKeyPressed = FALSE;
@@ -47,5 +49,8 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		void drawWater(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
+		void drawShield(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
 		
 };

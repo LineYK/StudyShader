@@ -66,6 +66,14 @@ vec3 getLightColor(DirectionalLight& l) {
 	return l.color * l.intensity;
 }
 
+void ofApp::drawWater(DirectionalLight& light, mat4& proj, mat4& view) {
+
+}
+
+void ofApp::drawShield(DirectionalLight& light, mat4& proj, mat4& view) {
+
+}
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofDisableArbTex();
@@ -76,6 +84,8 @@ void ofApp::setup(){
 	diffuseTex.load("shield_diffuse.png");
 	specTex.load("shield_spec.png");
 	normalTex.load("shield_normal.png");
+	waterNrm.load("water_nrm.png");
+	waterNrm.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 	diffuseShader.load("mesh.vert", "blinnphong.frag");
 }
 
@@ -101,7 +111,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	cam.pos = vec3(0, 0.85f, 1);
+	cam.pos = vec3(0, 0.75f, 1);
 	float cAngle = radians(-45.0f);
 	vec3 right = vec3(1, 0, 0);
 
@@ -113,7 +123,7 @@ void ofApp::draw(){
 	vec3 up = vec3(0, 1, 0);
 	mat4 rotatetion = rotate(radians(-45.0f), right) * rotate(rotAngle, up);
 
-	mat4 view = inverse(translate(cam.pos) * rotate(cAngle, right));
+	mat4 view = inverse(translate(cam.pos));
 	mat4 model = rotatetion * rotationMatrix * scale(vec3(1.5, 1.5, 1.5));
 	mat4 proj = perspective(cam.fov, aspect, 0.1f, 10.0f);
 
@@ -121,9 +131,13 @@ void ofApp::draw(){
 
 	mat3 normalMatrix = transpose(inverse(mat3(model)));
 
-	dirLight.direction = normalize(vec3(0.5, -1, 1));
+	dirLight.direction = normalize(vec3(0.5, -1, -1));
 	dirLight.color = vec3(1, 1, 1);
 	dirLight.intensity = 1.0f;
+
+	waterLight.direction = normalize(vec3(-0.5, -1, 1));
+	waterLight.color = vec3(1, 1, 1);
+	waterLight.intensity = 1.0f;
 
 	diffuseShader.begin();
 	diffuseShader.setUniformMatrix4f("model", model);
