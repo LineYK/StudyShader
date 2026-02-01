@@ -67,11 +67,52 @@ vec3 getLightColor(DirectionalLight& l) {
 }
 
 void ofApp::drawWater(DirectionalLight& light, mat4& proj, mat4& view) {
+	static float t = 0.0f;
+	t += ofGetLastFrameTime();
 
+	vec3 right = vec3(1, 0, 0);
+	mat4 rotatetion = rotate(radians(-90.0f), right);
+	mat4 model = rotatetion * scale(vec3(5.0f, 4.0f, 4.0f));
+	mat4 mvp = proj * view * model;
+	mat3 normalMatrix = transpose(inverse(mat3(model)));
+
+	ofShader& shader = waterShader;
+	shader.begin();
+	shader.setUniformMatrix4f("model", model);
+	shader.setUniformMatrix4f("mvp", mvp);
+	shader.setUniform3f("cameraPos", cam.pos);
+	shader.setUniform3f("lightDir", getLightDirection(light));
+	shader.setUniform3f("lightCol", getLightColor(light));
+	shader.setUniformMatrix3f("normal", normalMatrix);
+	shader.setUniformTexture("normTex", waterNrm, 0);
+	shader.setUniform3f("ambientCol", vec3(0.1, 0.1, 0.1));
+	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
+	shader.setUniform1f("time", t);
+	planeMesh.draw();
+	shader.end();
 }
 
 void ofApp::drawShield(DirectionalLight& light, mat4& proj, mat4& view) {
 
+	mat4 model = translate(vec3(0.0, 0.75f, 0.0f)) * rotationMatrix;
+	mat4 mvp = proj * view * model;
+	mat3 normalMatrix = transpose(inverse(mat3(model)));
+
+	ofShader& shader = diffuseShader;
+	shader.begin();
+	shader.setUniformMatrix4f("model", model);
+	shader.setUniformMatrix4f("mvp", mvp);
+	shader.setUniform3f("cameraPos", cam.pos);
+	shader.setUniform3f("lightDir", getLightDirection(light));
+	shader.setUniform3f("lightCol", getLightColor(light));
+	shader.setUniformMatrix3f("normal", normalMatrix);
+	shader.setUniform3f("ambientCol", vec3(0.1, 0.1, 0.1));
+	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
+	shader.setUniformTexture("diffuseTex", diffuseTex, 0);
+	shader.setUniformTexture("specTex", specTex, 1);
+	shader.setUniformTexture("normTex", normalTex, 2);
+	shieldMesh.draw();
+	shader.end();
 }
 
 //--------------------------------------------------------------
@@ -80,13 +121,21 @@ void ofApp::setup(){
 	ofEnableDepthTest();
 
 	shieldMesh.load("shield.ply");
+	planeMesh.load("plane.ply");
 	calcTangents(shieldMesh);
+	calcTangents(planeMesh);
+
 	diffuseTex.load("shield_diffuse.png");
 	specTex.load("shield_spec.png");
 	normalTex.load("shield_normal.png");
 	waterNrm.load("water_nrm.png");
 	waterNrm.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
+
 	diffuseShader.load("mesh.vert", "blinnphong.frag");
+	waterShader.load("water.vert", "water.frag");
+
+	cam.pos = vec3(0, 0.75f, 1);
+	cam.fov = radians(90.0f);
 }
 
 //--------------------------------------------------------------
@@ -111,25 +160,10 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	cam.pos = vec3(0, 0.75f, 1);
-	float cAngle = radians(-45.0f);
-	vec3 right = vec3(1, 0, 0);
-
-	cam.fov = radians(100.0f);
 	float aspect = 1024.0f / 768.0f;
 
-	static float rotAngle = 0.0f;
-	rotAngle += 0.01f;
-	vec3 up = vec3(0, 1, 0);
-	mat4 rotatetion = rotate(radians(-45.0f), right) * rotate(rotAngle, up);
-
 	mat4 view = inverse(translate(cam.pos));
-	mat4 model = rotatetion * rotationMatrix * scale(vec3(1.5, 1.5, 1.5));
 	mat4 proj = perspective(cam.fov, aspect, 0.1f, 10.0f);
-
-	mat4 mvp = proj * view * model;
-
-	mat3 normalMatrix = transpose(inverse(mat3(model)));
 
 	dirLight.direction = normalize(vec3(0.5, -1, -1));
 	dirLight.color = vec3(1, 1, 1);
@@ -139,19 +173,8 @@ void ofApp::draw(){
 	waterLight.color = vec3(1, 1, 1);
 	waterLight.intensity = 1.0f;
 
-	diffuseShader.begin();
-	diffuseShader.setUniformMatrix4f("model", model);
-	diffuseShader.setUniformMatrix4f("mvp", mvp);
-	diffuseShader.setUniform3f("cameraPos", cam.pos);
-	diffuseShader.setUniform3f("lightDir", getLightDirection(dirLight));
-	diffuseShader.setUniform3f("lightCol", getLightColor(dirLight));
-	diffuseShader.setUniformMatrix3f("normal", normalMatrix);
-	diffuseShader.setUniform3f("ambientCol", vec3(0.5, 0.5, 0.5));
-	diffuseShader.setUniformTexture("diffuseTex", diffuseTex, 0);
-	diffuseShader.setUniformTexture("specTex", specTex, 1);
-	diffuseShader.setUniformTexture("normTex", normalTex, 2);
-	shieldMesh.draw();
-	diffuseShader.end();
+	drawShield(dirLight, proj, view);
+	drawWater(waterLight, proj, view);
 }
 
 //--------------------------------------------------------------

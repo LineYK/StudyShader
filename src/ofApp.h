@@ -18,7 +18,9 @@ class ofApp : public ofBaseApp{
 	public:
 		ofMesh torusMesh;
 		ofMesh shieldMesh;
+		ofMesh planeMesh;
 		ofShader diffuseShader;
+		ofShader waterShader;
 		CameraData cam;
 		DirectionalLight dirLight;
 		DirectionalLight waterLight;

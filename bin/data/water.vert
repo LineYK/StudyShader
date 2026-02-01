@@ -28,8 +28,6 @@ void main() {
 	vec3 N = normalize(normal * nrm.xyz);
 	TBN = mat3(T, B, N);
 
-	fragUV = vec2(uv.x, 1.0 - uv.y);
-
 	gl_Position = mvp * vec4(pos, 1.0);
 	fragNrm = (normal * nrm).xyz;
 	fragWorldPos = (model * vec4(pos, 1.0)).xyz;

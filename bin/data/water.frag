@@ -34,7 +34,5 @@ void main() {
 	float specBright = pow(specAmt, 512);
 	vec3 specCol = lightCol * specBright;
 
-	vec3 ambient = ambientCol * meshCol;
-
-	outCol = vec4(diffCol + specCol + ambient, 1.0);
+	outCol = vec4(diffCol + specCol + ambientCol, 1.0);
 }
