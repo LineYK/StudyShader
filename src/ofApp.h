@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxEasyCubemap.h"
 
 struct CameraData {
 	glm::vec3 pos;
@@ -19,8 +20,12 @@ class ofApp : public ofBaseApp{
 		ofMesh torusMesh;
 		ofMesh shieldMesh;
 		ofMesh planeMesh;
+		ofMesh cubeMesh;
+
 		ofShader diffuseShader;
 		ofShader waterShader;
+		ofShader cubemapShader;
+		
 		CameraData cam;
 		DirectionalLight dirLight;
 		DirectionalLight waterLight;
@@ -29,6 +34,8 @@ class ofApp : public ofBaseApp{
 		ofImage specTex;
 		ofImage normalTex;
 		ofImage waterNrm;
+
+		ofxEasyCubemap cubemap;
 
 		glm::mat4 rotationMatrix = glm::mat4(1.0f);
 		BOOL isRIghtKeyPressed = FALSE;
@@ -54,5 +61,6 @@ class ofApp : public ofBaseApp{
 
 		void drawWater(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
 		void drawShield(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
+		void drawCube(glm::mat4& proj, glm::mat4& view);
 		
 };

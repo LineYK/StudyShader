@@ -182,9 +182,11 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\ofxEasyCubemap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\ofxEasyCubemap.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
@@ -200,17 +202,34 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\data\blinnphong.frag" />
+    <None Include="bin\data\cube.ply" />
+    <None Include="bin\data\cubemap.frag" />
+    <None Include="bin\data\cubemap.vert" />
     <None Include="bin\data\diffuse.frag" />
     <None Include="bin\data\mesh.vert" />
     <None Include="bin\data\normal_vis.frag" />
     <None Include="bin\data\passthrough.vert" />
     <None Include="bin\data\phong.frag" />
+    <None Include="bin\data\plane.ply" />
     <None Include="bin\data\rimlight.frag" />
+    <None Include="bin\data\shield.ply" />
     <None Include="bin\data\specular.frag" />
     <None Include="bin\data\torus.ply" />
     <None Include="bin\data\uv_vis.frag" />
     <None Include="bin\data\water.frag" />
     <None Include="bin\data\water.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bin\data\cube_back.jpg" />
+    <Image Include="bin\data\cube_bottom.jpg" />
+    <Image Include="bin\data\cube_front.jpg" />
+    <Image Include="bin\data\cube_left.jpg" />
+    <Image Include="bin\data\cube_right.jpg" />
+    <Image Include="bin\data\cube_top.jpg" />
+    <Image Include="bin\data\shield_diffuse.png" />
+    <Image Include="bin\data\shield_normal.png" />
+    <Image Include="bin\data\shield_spec.png" />
+    <Image Include="bin\data\water_nrm.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

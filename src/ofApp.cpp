@@ -115,6 +115,26 @@ void ofApp::drawShield(DirectionalLight& light, mat4& proj, mat4& view) {
 	shader.end();
 }
 
+void ofApp::drawCube(glm::mat4& proj, glm::mat4& view)
+{
+	static float rotAngle = 0.01f;
+	rotAngle += 0.1f;
+
+	mat4 r = rotate(radians(rotAngle), vec3(0, 1, 0));
+	mat4 s = scale(vec3(0.4, 0.4, 0.4));
+	mat4 model = translate(vec3(0, 0.75f, 0)) * r * s;
+	mat4 mvp = proj * view * model;
+
+	ofShader& shader = cubemapShader;
+
+	shader.begin();
+	shader.setUniformMatrix4f("mvp", mvp);
+	shader.setUniformTexture("envMap", cubemap.getTexture(), 0);
+	shader.setUniform3f("cameraPos", cam.pos);
+	cubeMesh.draw();
+	shader.end();
+}
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofDisableArbTex();
@@ -133,6 +153,16 @@ void ofApp::setup(){
 
 	diffuseShader.load("mesh.vert", "blinnphong.frag");
 	waterShader.load("water.vert", "water.frag");
+
+	cubeMesh.load("cube.ply");
+	cubemapShader.load("cubemap.vert", "cubemap.frag");
+	cubemap.load("cube_front.jpg",
+		"cube_back.jpg",
+		"cube_right.jpg",
+		"cube_left.jpg",
+		"cube_top.jpg",
+		"cube_bottom.jpg"
+	);
 
 	cam.pos = vec3(0, 0.75f, 1);
 	cam.fov = radians(90.0f);
@@ -173,8 +203,9 @@ void ofApp::draw(){
 	waterLight.color = vec3(1, 1, 1);
 	waterLight.intensity = 1.0f;
 
-	drawShield(dirLight, proj, view);
-	drawWater(waterLight, proj, view);
+	//drawShield(dirLight, proj, view);
+	//drawWater(waterLight, proj, view);
+	drawCube(proj, view);
 }
 
 //--------------------------------------------------------------
