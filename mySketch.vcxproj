@@ -213,6 +213,8 @@
     <None Include="bin\data\plane.ply" />
     <None Include="bin\data\rimlight.frag" />
     <None Include="bin\data\shield.ply" />
+    <None Include="bin\data\skybox.frag" />
+    <None Include="bin\data\skybox.vert" />
     <None Include="bin\data\specular.frag" />
     <None Include="bin\data\torus.ply" />
     <None Include="bin\data\uv_vis.frag" />

@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp{
 		ofShader diffuseShader;
 		ofShader waterShader;
 		ofShader cubemapShader;
+		ofShader skyboxShader;
 		
 		CameraData cam;
 		DirectionalLight dirLight;
@@ -62,5 +63,6 @@ class ofApp : public ofBaseApp{
 		void drawWater(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
 		void drawShield(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
 		void drawCube(glm::mat4& proj, glm::mat4& view);
+		void drawSkybox(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
 		
 };

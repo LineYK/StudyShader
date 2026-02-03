@@ -50,6 +50,8 @@
     <None Include="bin\data\cube.ply" />
     <None Include="bin\data\plane.ply" />
     <None Include="bin\data\shield.ply" />
+    <None Include="bin\data\skybox.vert" />
+    <None Include="bin\data\skybox.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bin\data\cube_back.jpg" />

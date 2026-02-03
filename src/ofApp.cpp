@@ -135,6 +135,21 @@ void ofApp::drawCube(glm::mat4& proj, glm::mat4& view)
 	shader.end();
 }
 
+void ofApp::drawSkybox(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view)
+{
+	mat4 model = translate(cam.pos);
+	mat4 mvp = proj * view * model;
+
+	ofShader& shader = skyboxShader;
+	glDepthFunc(GL_LEQUAL);
+	shader.begin();
+	shader.setUniformMatrix4f("mvp", mvp);
+	shader.setUniformTexture("envMap", cubemap.getTexture(), 0);
+	cubeMesh.draw();
+	shader.end();
+	glDepthFunc(GL_LESS);
+}
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofDisableArbTex();
@@ -163,6 +178,8 @@ void ofApp::setup(){
 		"cube_top.jpg",
 		"cube_bottom.jpg"
 	);
+
+	skyboxShader.load("skybox.vert", "skybox.frag");
 
 	cam.pos = vec3(0, 0.75f, 1);
 	cam.fov = radians(90.0f);
@@ -203,9 +220,9 @@ void ofApp::draw(){
 	waterLight.color = vec3(1, 1, 1);
 	waterLight.intensity = 1.0f;
 
-	//drawShield(dirLight, proj, view);
-	//drawWater(waterLight, proj, view);
-	drawCube(proj, view);
+	drawShield(dirLight, proj, view);
+	drawWater(waterLight, proj, view);
+	drawSkybox(dirLight, proj, view);
 }
 
 //--------------------------------------------------------------
