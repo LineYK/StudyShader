@@ -5,9 +5,8 @@ uniform vec3 lightCol;
 uniform vec3 cameraPos;
 uniform vec3 ambientCol;
 
-uniform sampler2D diffuseTex;
-uniform sampler2D specTex;
 uniform sampler2D normTex;
+uniform samplerCube envMap;
 
 in vec3 fragNrm;
 in vec3 fragWorldPos;
@@ -28,7 +27,7 @@ void main() {
 	vec3 halfVec = normalize(lightDir + toCam);
 
 	float diffAmt = max(0.0, dot(nrm, lightDir));
-	vec3 diffCol = lightCol * vec3(0.3, 0.3, 0.4) * diffAmt;
+	vec3 diffCol = texture(envMap, reflect(-toCam, nrm)).rgb * diffAmt * lightCol;
 
 	float specAmt = max(0.0, dot(halfVec, nrm));
 	float specBright = pow(specAmt, 512);

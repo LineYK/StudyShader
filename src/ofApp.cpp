@@ -85,6 +85,7 @@ void ofApp::drawWater(DirectionalLight& light, mat4& proj, mat4& view) {
 	shader.setUniform3f("lightCol", getLightColor(light));
 	shader.setUniformMatrix3f("normal", normalMatrix);
 	shader.setUniformTexture("normTex", waterNrm, 0);
+	shader.setUniformTexture("envMap", cubemap.getTexture(), 1);
 	shader.setUniform3f("ambientCol", vec3(0.1, 0.1, 0.1));
 	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
 	shader.setUniform1f("time", t);
