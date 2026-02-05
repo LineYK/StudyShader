@@ -112,6 +112,7 @@ void ofApp::drawShield(DirectionalLight& light, mat4& proj, mat4& view) {
 	shader.setUniformTexture("diffuseTex", diffuseTex, 0);
 	shader.setUniformTexture("specTex", specTex, 1);
 	shader.setUniformTexture("normTex", normalTex, 2);
+	shader.setUniformTexture("envMap", cubemap.getTexture(), 3);
 	shieldMesh.draw();
 	shader.end();
 }
