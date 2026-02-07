@@ -211,6 +211,7 @@
     <None Include="bin\data\passthrough.vert" />
     <None Include="bin\data\phong.frag" />
     <None Include="bin\data\plane.ply" />
+    <None Include="bin\data\PointLight.frag" />
     <None Include="bin\data\rimlight.frag" />
     <None Include="bin\data\shield.ply" />
     <None Include="bin\data\skybox.frag" />
