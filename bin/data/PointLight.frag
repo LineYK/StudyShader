@@ -4,20 +4,51 @@ uniform vec3 meshCol;
 uniform vec3 lightPos;
 uniform float lightRadius;
 uniform vec3 lightCol;
+uniform vec3 cameraPos;
+uniform vec3 ambientCol;
+uniform sampler2D diffuseTex;
+uniform sampler2D specTex;
+uniform sampler2D normTex;
+uniform samplerCube envMap;
 
 in vec3 fragNrm;
 in vec3 fragWorldPos;
+in vec2 fragUV;
+in mat3 TBN;
 out vec4 outCol;
 
+float diffuse(vec3 lightDir, vec3 nrm) {
+	float diffAmt = max(0.0, dot(lightDir, nrm));
+	return diffAmt;
+}
+
+float specular(vec3 lightDir, vec3 viewDir, vec3 nrm, float shininess) {
+	vec3 halfVec = normalize(lightDir + viewDir);
+	float specAmt = max(0.0, dot(halfVec, nrm));
+	return pow(specAmt, shininess);
+}
+
 void main() {
-	vec3 normal = normalize(fragNrm);
-	vec3 toLight = lightPos - fragWorldPos;
+	vec3 nrm = texture(normTex, fragUV).rgb;
+	nrm = normalize(nrm * 2.0 - 1.0);
+	nrm = normalize(TBN * nrm);
+	vec3 viewDir = normalize(cameraPos - fragWorldPos);
+
+	vec3 envSample = texture(envMap, reflect(-viewDir, nrm)).rgb;
+	vec3 screenLight = mix(lightCol, envSample + lightCol * 0.5, 0.5);
+
+	vec3 toLight = lightPos - fragWorldPos; 
 	vec3 lightDir = normalize(toLight);
-
-	float distToLight = length(toLight);
+	float distToLight = length(toLight); 
 	float falloff = max(0.0, 1.0 - (distToLight / lightRadius));
-	vec3 adjLightCol = lightCol * falloff;
-	flaot finalBright = max(0, dot(lightDir, normal));
 
-	outCol = vec4(meshCol * adjLightCol * finalBright, 1.0);
+	float diffAmt = diffuse(lightDir, nrm);
+	float specAmt = specular(lightDir, viewDir, nrm, 4.0);
+
+	vec3 diffCol = texture(diffuseTex, fragUV).rgb * screenLight * diffAmt;
+
+	float specMask = texture(specTex, fragUV).r;
+	vec3 specCol = specMask * screenLight * specAmt;
+
+	outCol = vec4(diffCol + specCol + ambientCol, 1.0);
 }
