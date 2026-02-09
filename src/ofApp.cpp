@@ -1,5 +1,7 @@
 #include "ofApp.h"
 
+#define USE_NIGHT_SKYBOX 1
+
 using namespace glm;
 
 void calcTangents(ofMesh& mesh)
@@ -62,11 +64,11 @@ vec3 getLightDirection(DirectionalLight& l) {
 	return normalize(l.direction * -1.0f);
 }
 
-vec3 getLightColor(DirectionalLight& l) {
+vec3 getLightColor(PointLight& l) {
 	return l.color * l.intensity;
 }
 
-void ofApp::drawWater(DirectionalLight& light, mat4& proj, mat4& view) {
+void ofApp::drawWater(PointLight& light, mat4& proj, mat4& view) {
 	static float t = 0.0f;
 	t += ofGetLastFrameTime();
 
@@ -81,7 +83,6 @@ void ofApp::drawWater(DirectionalLight& light, mat4& proj, mat4& view) {
 	shader.setUniformMatrix4f("model", model);
 	shader.setUniformMatrix4f("mvp", mvp);
 	shader.setUniform3f("cameraPos", cam.pos);
-	shader.setUniform3f("lightDir", getLightDirection(light));
 	shader.setUniform3f("lightCol", getLightColor(light));
 	shader.setUniformMatrix3f("normal", normalMatrix);
 	shader.setUniformTexture("normTex", waterNrm, 0);
@@ -89,11 +90,13 @@ void ofApp::drawWater(DirectionalLight& light, mat4& proj, mat4& view) {
 	shader.setUniform3f("ambientCol", vec3(0.1, 0.1, 0.1));
 	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
 	shader.setUniform1f("time", t);
+	shader.setUniform1f("lightRadius", light.radius);
+	shader.setUniform3f("lightPos", light.position);
 	planeMesh.draw();
 	shader.end();
 }
 
-void ofApp::drawShield(DirectionalLight& light, mat4& proj, mat4& view) {
+void ofApp::drawShield(PointLight& light, mat4& proj, mat4& view) {
 
 	mat4 model = translate(vec3(0.0, 0.75f, 0.0f)) * rotationMatrix;
 	mat4 mvp = proj * view * model;
@@ -104,7 +107,6 @@ void ofApp::drawShield(DirectionalLight& light, mat4& proj, mat4& view) {
 	shader.setUniformMatrix4f("model", model);
 	shader.setUniformMatrix4f("mvp", mvp);
 	shader.setUniform3f("cameraPos", cam.pos);
-	shader.setUniform3f("lightDir", getLightDirection(light));
 	shader.setUniform3f("lightCol", getLightColor(light));
 	shader.setUniformMatrix3f("normal", normalMatrix);
 	shader.setUniform3f("ambientCol", vec3(0.1, 0.1, 0.1));
@@ -113,6 +115,8 @@ void ofApp::drawShield(DirectionalLight& light, mat4& proj, mat4& view) {
 	shader.setUniformTexture("specTex", specTex, 1);
 	shader.setUniformTexture("normTex", normalTex, 2);
 	shader.setUniformTexture("envMap", cubemap.getTexture(), 3);
+	shader.setUniform1f("lightRadius", light.radius);
+	shader.setUniform3f("lightPos", light.position);
 	shieldMesh.draw();
 	shader.end();
 }
@@ -137,7 +141,7 @@ void ofApp::drawCube(glm::mat4& proj, glm::mat4& view)
 	shader.end();
 }
 
-void ofApp::drawSkybox(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view)
+void ofApp::drawSkybox(PointLight& dirLight, glm::mat4& proj, glm::mat4& view)
 {
 	mat4 model = translate(cam.pos);
 	mat4 mvp = proj * view * model;
@@ -168,18 +172,23 @@ void ofApp::setup(){
 	waterNrm.load("water_nrm.png");
 	waterNrm.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
-	diffuseShader.load("mesh.vert", "blinnphong.frag");
-	waterShader.load("water.vert", "water.frag");
+	diffuseShader.load("mesh.vert", "PointLight.frag");
+	waterShader.load("water.vert", "PointLightWater.frag");
 
 	cubeMesh.load("cube.ply");
 	cubemapShader.load("cubemap.vert", "cubemap.frag");
-	cubemap.load("cube_front.jpg",
-		"cube_back.jpg",
-		"cube_right.jpg",
-		"cube_left.jpg",
-		"cube_top.jpg",
-		"cube_bottom.jpg"
-	);
+
+#if USE_NIGHT_SKYBOX
+	cubemap.load("night_front.jpg", "night_back.jpg",
+		"night_right.jpg", "night_left.jpg",
+		"night_top.jpg", "night_bottom.jpg");
+
+#else
+	cubemap.load("cube_front.jpg", "cube_back.jpg",
+		"cube_right.jpg", "cube_left.jpg",
+		"cube_top.jpg", "cube_bottom.jpg");
+#endif
+
 
 	skyboxShader.load("skybox.vert", "skybox.frag");
 
@@ -214,6 +223,9 @@ void ofApp::draw(){
 	mat4 view = inverse(translate(cam.pos));
 	mat4 proj = perspective(cam.fov, aspect, 0.1f, 10.0f);
 
+	static float t = 0.0f;
+	t += ofGetLastFrameTime();
+
 	dirLight.direction = normalize(vec3(0.5, -1, -1));
 	dirLight.color = vec3(1, 1, 1);
 	dirLight.intensity = 1.0f;
@@ -222,9 +234,14 @@ void ofApp::draw(){
 	waterLight.color = vec3(1, 1, 1);
 	waterLight.intensity = 1.0f;
 
-	drawShield(dirLight, proj, view);
-	drawWater(waterLight, proj, view);
-	drawSkybox(dirLight, proj, view);
+	pointLight.color = vec3(1, 1, 1);
+	pointLight.radius = 1.0f;
+	pointLight.position = vec3(sin(t), 0.5, 0.25);
+	pointLight.intensity = 3.0f;
+
+	drawShield(pointLight, proj, view);
+	drawWater(pointLight, proj, view);
+	drawSkybox(pointLight, proj, view);
 }
 
 //--------------------------------------------------------------

@@ -53,6 +53,7 @@
     <None Include="bin\data\skybox.vert" />
     <None Include="bin\data\skybox.frag" />
     <None Include="bin\data\PointLight.frag" />
+    <None Include="bin\data\PointLightWater.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bin\data\cube_back.jpg" />
@@ -65,5 +66,11 @@
     <Image Include="bin\data\shield_normal.png" />
     <Image Include="bin\data\shield_spec.png" />
     <Image Include="bin\data\water_nrm.png" />
+    <Image Include="bin\data\night_back.jpg" />
+    <Image Include="bin\data\night_bottom.jpg" />
+    <Image Include="bin\data\night_front.jpg" />
+    <Image Include="bin\data\night_left.jpg" />
+    <Image Include="bin\data\night_right.jpg" />
+    <Image Include="bin\data\night_top.jpg" />
   </ItemGroup>
 </Project>

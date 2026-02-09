@@ -37,6 +37,7 @@ class ofApp : public ofBaseApp{
 		CameraData cam;
 		DirectionalLight dirLight;
 		DirectionalLight waterLight;
+		PointLight pointLight;
 
 		ofImage diffuseTex;
 		ofImage specTex;
@@ -67,9 +68,9 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		void drawWater(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
-		void drawShield(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
+		void drawWater(PointLight& pointLight, glm::mat4& proj, glm::mat4& view);
+		void drawShield(PointLight& pointLight, glm::mat4& proj, glm::mat4& view);
 		void drawCube(glm::mat4& proj, glm::mat4& view);
-		void drawSkybox(DirectionalLight& dirLight, glm::mat4& proj, glm::mat4& view);
+		void drawSkybox(PointLight& pointLight, glm::mat4& proj, glm::mat4& view);
 		
 };

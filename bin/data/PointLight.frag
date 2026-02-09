@@ -40,10 +40,10 @@ void main() {
 	vec3 toLight = lightPos - fragWorldPos; 
 	vec3 lightDir = normalize(toLight);
 	float distToLight = length(toLight); 
-	float falloff = max(0.0, 1.0 - (distToLight / lightRadius));
+	float falloff = 1.0 - (distToLight / lightRadius);
 
-	float diffAmt = diffuse(lightDir, nrm);
-	float specAmt = specular(lightDir, viewDir, nrm, 4.0);
+	float diffAmt = diffuse(lightDir, nrm) * falloff;
+	float specAmt = specular(lightDir, viewDir, nrm, 4.0) * falloff;
 
 	vec3 diffCol = texture(diffuseTex, fragUV).rgb * screenLight * diffAmt;
 
