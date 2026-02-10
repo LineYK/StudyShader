@@ -21,6 +21,15 @@ struct PointLight {
 	float radius;
 };
 
+struct SpotLight {
+	glm::vec3 position;
+	glm::vec3 direction;
+	float cutOff;
+
+	glm::vec3 color;
+	float intensity;
+};
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -38,6 +47,7 @@ class ofApp : public ofBaseApp{
 		DirectionalLight dirLight;
 		DirectionalLight waterLight;
 		PointLight pointLight;
+		SpotLight spotLight;
 
 		ofImage diffuseTex;
 		ofImage specTex;

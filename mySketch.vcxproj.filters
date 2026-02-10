@@ -54,6 +54,7 @@
     <None Include="bin\data\skybox.frag" />
     <None Include="bin\data\PointLight.frag" />
     <None Include="bin\data\PointLightWater.frag" />
+    <None Include="bin\data\spotLight.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bin\data\cube_back.jpg" />
