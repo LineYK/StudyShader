@@ -64,11 +64,11 @@ vec3 getLightDirection(DirectionalLight& l) {
 	return normalize(l.direction * -1.0f);
 }
 
-vec3 getLightColor(PointLight& l) {
+vec3 getLightColor(SpotLight& l) {
 	return l.color * l.intensity;
 }
 
-void ofApp::drawWater(PointLight& light, mat4& proj, mat4& view) {
+void ofApp::drawWater(SpotLight& light, mat4& proj, mat4& view) {
 	static float t = 0.0f;
 	t += ofGetLastFrameTime();
 
@@ -87,16 +87,17 @@ void ofApp::drawWater(PointLight& light, mat4& proj, mat4& view) {
 	shader.setUniformMatrix3f("normal", normalMatrix);
 	shader.setUniformTexture("normTex", waterNrm, 0);
 	shader.setUniformTexture("envMap", cubemap.getTexture(), 1);
-	shader.setUniform3f("ambientCol", vec3(0.1, 0.1, 0.1));
+	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
 	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
 	shader.setUniform1f("time", t);
-	shader.setUniform1f("lightRadius", light.radius);
+	shader.setUniform1f("lightCutoff", light.cutOff);
+	shader.setUniform3f("lightConeDir", light.direction);
 	shader.setUniform3f("lightPos", light.position);
 	planeMesh.draw();
 	shader.end();
 }
 
-void ofApp::drawShield(PointLight& light, mat4& proj, mat4& view) {
+void ofApp::drawShield(SpotLight& light, mat4& proj, mat4& view) {
 
 	mat4 model = translate(vec3(0.0, 0.75f, 0.0f)) * rotationMatrix;
 	mat4 mvp = proj * view * model;
@@ -109,13 +110,14 @@ void ofApp::drawShield(PointLight& light, mat4& proj, mat4& view) {
 	shader.setUniform3f("cameraPos", cam.pos);
 	shader.setUniform3f("lightCol", getLightColor(light));
 	shader.setUniformMatrix3f("normal", normalMatrix);
-	shader.setUniform3f("ambientCol", vec3(0.1, 0.1, 0.1));
+	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
 	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
 	shader.setUniformTexture("diffuseTex", diffuseTex, 0);
 	shader.setUniformTexture("specTex", specTex, 1);
 	shader.setUniformTexture("normTex", normalTex, 2);
 	shader.setUniformTexture("envMap", cubemap.getTexture(), 3);
-	shader.setUniform1f("lightRadius", light.radius);
+	shader.setUniform1f("lightCutoff", light.cutOff);
+	shader.setUniform3f("lightConeDir", light.direction);
 	shader.setUniform3f("lightPos", light.position);
 	shieldMesh.draw();
 	shader.end();
@@ -141,7 +143,7 @@ void ofApp::drawCube(glm::mat4& proj, glm::mat4& view)
 	shader.end();
 }
 
-void ofApp::drawSkybox(PointLight& dirLight, glm::mat4& proj, glm::mat4& view)
+void ofApp::drawSkybox(glm::mat4& proj, glm::mat4& view)
 {
 	mat4 model = translate(cam.pos);
 	mat4 mvp = proj * view * model;
@@ -172,8 +174,8 @@ void ofApp::setup(){
 	waterNrm.load("water_nrm.png");
 	waterNrm.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
-	diffuseShader.load("mesh.vert", "PointLight.frag");
-	waterShader.load("water.vert", "PointLightWater.frag");
+	diffuseShader.load("mesh.vert", "spotLight.frag");
+	waterShader.load("water.vert", "spotLightWater.frag");
 
 	cubeMesh.load("cube.ply");
 	cubemapShader.load("cubemap.vert", "cubemap.frag");
@@ -239,9 +241,15 @@ void ofApp::draw(){
 	pointLight.position = vec3(sin(t), 0.5, 0.25);
 	pointLight.intensity = 3.0f;
 
-	drawShield(pointLight, proj, view);
-	drawWater(pointLight, proj, view);
-	drawSkybox(pointLight, proj, view);
+	spotLight.color = vec3(1, 1, 1);
+	spotLight.position = cam.pos + vec3(sin(t), 0, 0);
+	spotLight.intensity = 1.0;
+	spotLight.direction = vec3(0, 0, -1);
+	spotLight.cutOff = cos(radians(17.55f));
+
+	drawShield(spotLight, proj, view);
+	drawWater(spotLight, proj, view);
+	drawSkybox(proj, view);
 }
 
 //--------------------------------------------------------------

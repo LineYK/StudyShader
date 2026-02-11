@@ -219,6 +219,7 @@
     <None Include="bin\data\skybox.vert" />
     <None Include="bin\data\specular.frag" />
     <None Include="bin\data\spotLight.frag" />
+    <None Include="bin\data\spotLightWater.frag" />
     <None Include="bin\data\torus.ply" />
     <None Include="bin\data\uv_vis.frag" />
     <None Include="bin\data\water.frag" />

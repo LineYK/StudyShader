@@ -37,9 +37,13 @@ void main() {
 	vec3 envSample = texture(envMap, reflect(-viewDir, nrm)).rgb;
 	vec3 screenLight = mix(lightCol, envSample + lightCol * 0.5, 0.5);
 
-	// Spotlight °è»ê todo
 	vec3 toLight = lightPos - fragWorldPos;
 	vec3 lightDir = normalize(toLight);
+	float angle = dot(lightConeDir, -lightDir);
+	float falloff = 0.0;
+	if (angle > lightCutoff) {
+		falloff = 1.0;
+	}
 
 	float diffAmt = diffuse(lightDir, nrm) * falloff;
 	float specAmt = specular(lightDir, viewDir, nrm, 4.0) * falloff;
