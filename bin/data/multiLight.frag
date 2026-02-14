@@ -52,5 +52,35 @@ float specular(vec3 lightDir, vec3 viewDir, vec3 nrm, float shininess) {
 }
 
 void main() {
+	vec3 nrm = texture(normTex, fragUV).rgb;
+	nrm = normalize(nrm * 2.0 - 1.0);
+	nrm = normalize(TBN * nrm);
 
+	vec3 viewDir = normalize(cameraPos - fragWorldPos);
+
+	vec3 diffuseColor = texture(diffuseTex, fragUV).rgb;
+	float specMask = texture(specTex, fragUV).r;
+	vec3 envReflections = texture(envMap, reflect(-viewDir, nrm)).rgb;
+
+	vec3 finalColor = vec3(0.0);
+
+	// 디렉셔널 light 계산
+	for (int i = 0; i < NUM_DIR_LIGHTS; i++) {
+		DirectionalLight light = directionalLights[i];
+		vec3 sceneLight = mix(light.color, envReflections + light.color * 0.5, 0.5);
+
+		float diffAmt = diffuse(light.direction, nrm);
+		float specAmt = specular(light.direction, viewDir, nrm, 4.0) * specMask;
+
+		vec3 envLighting = envReflections * specMask * diffAmt;
+		vec3 specCol = specMask * sceneLight * specAmt;
+
+		finalColor += diffuseColor * diffAmt * light.color;
+		finalColor += specCol * sceneLight;
+	}
+
+	// 포인트 light 계산
+	for (int i = 0; i < NUM_POINT_LIGHTS; i++) {
+
+	}
 }
