@@ -81,6 +81,25 @@ void main() {
 
 	// 포인트 light 계산
 	for (int i = 0; i < NUM_POINT_LIGHTS; i++) {
+		PointLight light = pointLights[i];
+		vec3 sceneLight = mix(light.color, envReflections + light.color * 0.5, 0.5);
+		vec3 toLight = light.position - fragWorldPos;
+		vec3 lightDir = normalize(toLight);
+		float distToLight = length(toLight);
+		float falloff = 1.0 - (distToLight / light.radius);
+		
+		float diffAmt = diffuse(lightDir, nrm) * falloff;
+		float specAmt = specular(lightDir, viewDir, nrm, 4.0) * specMask * falloff;
+
+		vec3 envLighting = envReflections * specMask * diffAmt;
+		vec3 specCol = specMask * sceneLight * specAmt;
+
+		finalColor += diffAmt * sceneLight * diffuseColor;
+		finalColor += specCol;
+	}
+
+	// 스포트 light 계산
+	for (int i = 0; i < NUM_SPOT_LIGHTS; i++) {
 
 	}
 }
