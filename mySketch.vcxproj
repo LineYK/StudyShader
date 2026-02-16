@@ -208,6 +208,7 @@
     <None Include="bin\data\diffuse.frag" />
     <None Include="bin\data\mesh.vert" />
     <None Include="bin\data\multiLight.frag" />
+    <None Include="bin\data\multiLightWater.frag" />
     <None Include="bin\data\normal_vis.frag" />
     <None Include="bin\data\passthrough.vert" />
     <None Include="bin\data\phong.frag" />
