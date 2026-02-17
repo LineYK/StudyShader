@@ -64,11 +64,22 @@ vec3 getLightDirection(DirectionalLight& l) {
 	return normalize(l.direction * -1.0f);
 }
 
-vec3 getLightColor(SpotLight& l) {
+glm::vec3 getLightColor(DirectionalLight& l)
+{
 	return l.color * l.intensity;
 }
 
-void ofApp::drawWater(SpotLight& light, mat4& proj, mat4& view) {
+glm::vec3 getLightColor(PointLight& l)
+{
+	return l.color * l.intensity;
+}
+
+glm::vec3 getLightColor(SpotLight& l)
+{
+	return l.color * l.intensity;
+}
+
+void ofApp::drawWater(mat4& proj, mat4& view) {
 	static float t = 0.0f;
 	t += ofGetLastFrameTime();
 
@@ -82,22 +93,40 @@ void ofApp::drawWater(SpotLight& light, mat4& proj, mat4& view) {
 	shader.begin();
 	shader.setUniformMatrix4f("model", model);
 	shader.setUniformMatrix4f("mvp", mvp);
-	shader.setUniform3f("cameraPos", cam.pos);
-	shader.setUniform3f("lightCol", getLightColor(light));
 	shader.setUniformMatrix3f("normal", normalMatrix);
+	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
 	shader.setUniformTexture("normTex", waterNrm, 0);
 	shader.setUniformTexture("envMap", cubemap.getTexture(), 1);
-	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
-	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
 	shader.setUniform1f("time", t);
-	shader.setUniform1f("lightCutoff", light.cutOff);
-	shader.setUniform3f("lightConeDir", light.direction);
-	shader.setUniform3f("lightPos", light.position);
+	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
+	shader.setUniform3f("cameraPos", cam.pos);
+
+	shader.setUniform3f("directionalLights[0].direction", getLightDirection(dirLights[0]));
+	shader.setUniform3f("directionalLights[0].color", getLightColor(dirLights[0]));
+
+	shader.setUniform3f("pointLights[0].position", pointLights[0].position);
+	shader.setUniform3f("pointLights[0].color", getLightColor(pointLights[0]));
+	shader.setUniform1f("pointLights[0].radius", pointLights[0].radius);
+
+	shader.setUniform3f("pointLights[1].position", pointLights[1].position);
+	shader.setUniform3f("pointLights[1].color", getLightColor(pointLights[1]));
+	shader.setUniform1f("pointLights[1].radius", pointLights[1].radius);
+
+	shader.setUniform3f("spotLights[0].position", spotLights[0].position);
+	shader.setUniform3f("spotLights[0].direction", spotLights[0].direction);
+	shader.setUniform3f("spotLights[0].color", getLightColor(spotLights[0]));
+	shader.setUniform1f("spotLights[0].cutOff", spotLights[0].cutOff);
+
+	shader.setUniform3f("spotLights[1].position", spotLights[1].position);
+	shader.setUniform3f("spotLights[1].direction", spotLights[1].direction);
+	shader.setUniform3f("spotLights[1].color", getLightColor(spotLights[1]));
+	shader.setUniform1f("spotLights[1].cutOff", spotLights[1].cutOff);
+
 	planeMesh.draw();
 	shader.end();
 }
 
-void ofApp::drawShield(SpotLight& light, mat4& proj, mat4& view) {
+void ofApp::drawShield(mat4& proj, mat4& view) {
 
 	mat4 model = translate(vec3(0.0, 0.75f, 0.0f)) * rotationMatrix;
 	mat4 mvp = proj * view * model;
@@ -107,18 +136,36 @@ void ofApp::drawShield(SpotLight& light, mat4& proj, mat4& view) {
 	shader.begin();
 	shader.setUniformMatrix4f("model", model);
 	shader.setUniformMatrix4f("mvp", mvp);
-	shader.setUniform3f("cameraPos", cam.pos);
-	shader.setUniform3f("lightCol", getLightColor(light));
 	shader.setUniformMatrix3f("normal", normalMatrix);
-	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
 	shader.setUniform3f("meshSpecCol", vec3(1.0, 1.0, 1.0));
 	shader.setUniformTexture("diffuseTex", diffuseTex, 0);
 	shader.setUniformTexture("specTex", specTex, 1);
 	shader.setUniformTexture("normTex", normalTex, 2);
 	shader.setUniformTexture("envMap", cubemap.getTexture(), 3);
-	shader.setUniform1f("lightCutoff", light.cutOff);
-	shader.setUniform3f("lightConeDir", light.direction);
-	shader.setUniform3f("lightPos", light.position);
+	shader.setUniform3f("cameraPos", cam.pos);
+	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
+
+	shader.setUniform3f("directionalLights[0].direction", getLightDirection(dirLights[0]));
+	shader.setUniform3f("directionalLights[0].color", getLightColor(dirLights[0]));
+
+	shader.setUniform3f("pointLights[0].position", pointLights[0].position);
+	shader.setUniform3f("pointLights[0].color", getLightColor(pointLights[0]));
+	shader.setUniform1f("pointLights[0].radius", pointLights[0].radius);
+
+	shader.setUniform3f("pointLights[1].position", pointLights[1].position);
+	shader.setUniform3f("pointLights[1].color", getLightColor(pointLights[1]));
+	shader.setUniform1f("pointLights[1].radius", pointLights[1].radius);
+
+	shader.setUniform3f("spotLights[0].position", spotLights[0].position);
+	shader.setUniform3f("spotLights[0].direction", spotLights[0].direction);
+	shader.setUniform3f("spotLights[0].color", getLightColor(spotLights[0]));
+	shader.setUniform1f("spotLights[0].cutOff", spotLights[0].cutOff);
+
+	shader.setUniform3f("spotLights[1].position", spotLights[1].position);
+	shader.setUniform3f("spotLights[1].direction", spotLights[1].direction);
+	shader.setUniform3f("spotLights[1].color", getLightColor(spotLights[1]));
+	shader.setUniform1f("spotLights[1].cutOff", spotLights[1].cutOff);
+
 	shieldMesh.draw();
 	shader.end();
 }
@@ -174,8 +221,8 @@ void ofApp::setup(){
 	waterNrm.load("water_nrm.png");
 	waterNrm.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
-	diffuseShader.load("mesh.vert", "spotLight.frag");
-	waterShader.load("water.vert", "spotLightWater.frag");
+	diffuseShader.load("mesh.vert", "multiLight.frag");
+	waterShader.load("water.vert", "multiLightWater.frag");
 
 	cubeMesh.load("cube.ply");
 	cubemapShader.load("cubemap.vert", "cubemap.frag");
@@ -225,30 +272,34 @@ void ofApp::draw(){
 	mat4 view = inverse(translate(cam.pos));
 	mat4 proj = perspective(cam.fov, aspect, 0.1f, 10.0f);
 
-	static float t = 0.0f;
-	t += ofGetLastFrameTime();
+	dirLights[0].color = vec3(1, 1, 0);
+	dirLights[0].intensity = 1.0f;
+	dirLights[0].direction = vec3(1, -1, -1);
 
-	dirLight.direction = normalize(vec3(0.5, -1, -1));
-	dirLight.color = vec3(1, 1, 1);
-	dirLight.intensity = 1.0f;
+	pointLights[0].color = vec3(1, 0, 0);
+	pointLights[0].radius = 1.0f;
+	pointLights[0].position = vec3(-0.5, 0.5, 0.25);
+	pointLights[0].intensity = 1.0;
 
-	waterLight.direction = normalize(vec3(-0.5, -1, 1));
-	waterLight.color = vec3(1, 1, 1);
-	waterLight.intensity = 1.0f;
+	pointLights[1].color = vec3(0, 1, 0);
+	pointLights[1].radius = 1.0f;
+	pointLights[1].position = vec3(0.5, 0.5, 0.25);
+	pointLights[1].intensity = 1.0;
 
-	pointLight.color = vec3(1, 1, 1);
-	pointLight.radius = 1.0f;
-	pointLight.position = vec3(sin(t), 0.5, 0.25);
-	pointLight.intensity = 3.0f;
+	spotLights[0].color = vec3(0, 0, 1);
+	spotLights[0].position = cam.pos + vec3(0.0, 0.5, 0);
+	spotLights[0].intensity = 1.0;
+	spotLights[0].direction = vec3(0, 0, -1);
+	spotLights[0].cutOff = glm::cos(glm::radians(35.0f));
 
-	spotLight.color = vec3(1, 1, 1);
-	spotLight.position = cam.pos + vec3(sin(t), 0, 0);
-	spotLight.intensity = 1.0;
-	spotLight.direction = vec3(0, 0, -1);
-	spotLight.cutOff = cos(radians(17.55f));
+	spotLights[1].color = vec3(0, 1, 1);
+	spotLights[1].position = cam.pos + vec3(0.0, -0.5, 0);
+	spotLights[1].intensity = 1.5;
+	spotLights[1].direction = vec3(0, 0, -1);
+	spotLights[1].cutOff = glm::cos(glm::radians(15.0f));
 
-	drawShield(spotLight, proj, view);
-	drawWater(spotLight, proj, view);
+	drawShield(proj, view);
+	drawWater(proj, view);
 	drawSkybox(proj, view);
 }
 

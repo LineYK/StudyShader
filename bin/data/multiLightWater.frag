@@ -65,6 +65,7 @@ void main() {
 	float specMask = texture(specTex, fragUV).r;
 	vec3 finalCol = vec3(0.0);
 
+	// Directional Lights
 	for (int i = 0; i < NUM_DIR_LIGHTS; i++) {
 		DirectionalLight light = directionalLights[i];
 
@@ -76,5 +77,40 @@ void main() {
 
 		finalCol += diffCol + specCol;
 	}
+
+	// Point Lights
+	for (int i = 0; i < NUM_POINT_LIGHTS; i++) {
+		PointLight light = pointLights[i];
+		vec3 toLight = light.position - fragWorldPos;
+		vec3 lightDir = normalize(toLight);
+		float distToLight = length(toLight);
+		float falloff = 1.0 - (distToLight / light.radius);
+
+		float diffAmt = diffuse(lightDir, nrm) * falloff;
+		float specAmt = specular(lightDir, viewDir, nrm, 4.0) * specMask * falloff;
+
+		vec3 specCol = specMask * light.color * specAmt;
+		vec3 diffCol = envSample * specMask * diffAmt;
+
+		finalCol += diffCol + specCol;
+	}
+
+	// Spot Lights
+	for (int i = 0; i < NUM_SPOT_LIGHTS; i++) {
+		SpotLight light = spotLights[i];
+		vec3 toLight = light.position - fragWorldPos;
+		vec3 lightDir = normalize(toLight);
+		float angle = dot(light.direction, -lightDir);
+		float falloff = (angle > light.cutoff) ? 1.0 : 0.0;
+
+		float diffAmt = diffuse(lightDir, nrm) * falloff;
+		float specAmt = specular(lightDir, viewDir, nrm, 4.0) * specMask * falloff;
+
+		vec3 specCol = specMask * light.color * specAmt;
+		vec3 diffCol = envSample * specMask * diffAmt;
+
+		finalCol += diffCol + specCol;
+	}
 	
+	outCol = vec4(finalCol + ambientCol, 1.0);
 }

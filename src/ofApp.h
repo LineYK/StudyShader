@@ -78,9 +78,12 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		void drawWater(SpotLight& pointLight, glm::mat4& proj, glm::mat4& view);
-		void drawShield(SpotLight& pointLight, glm::mat4& proj, glm::mat4& view);
+		void drawWater(glm::mat4& proj, glm::mat4& view);
+		void drawShield(glm::mat4& proj, glm::mat4& view);
 		void drawCube(glm::mat4& proj, glm::mat4& view);
 		void drawSkybox(glm::mat4& proj, glm::mat4& view);
 		
+		DirectionalLight dirLights[1];
+		PointLight pointLights[2];
+		SpotLight spotLights[2];
 };
