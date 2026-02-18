@@ -8,17 +8,37 @@ struct CameraData {
 	float fov;
 };
 
-struct DirectionalLight {
+struct Light {
+	virtual bool isPointLight() {
+		return false;
+	}
+	virtual void apply(ofShader& shader) {};
+};
+
+struct DirectionalLight : public Light {
 	glm::vec3 direction;
 	glm::vec3 color;
 	float intensity;
+	virtual void apply(ofShader& shader) override {
+		shader.setUniform3f("lightDir", -direction);
+		shader.setUniform3f("lightCol", color * intensity);
+	}
 };
 
-struct PointLight {
+struct PointLight : public Light {
 	glm::vec3 position;
 	glm::vec3 color;
 	float intensity;
 	float radius;
+
+	virtual bool isPointLight() override {
+		return true;
+	}
+	virtual void apply(ofShader& shader) override {
+		shader.setUniform3f("lightPos", position);
+		shader.setUniform3f("lightCol", color * intensity);
+		shader.setUniform1f("lightRadius", radius);
+	}
 };
 
 struct SpotLight {
