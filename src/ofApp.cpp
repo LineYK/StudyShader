@@ -126,14 +126,16 @@ void ofApp::drawWater(mat4& proj, mat4& view) {
 	shader.end();
 }
 
-void ofApp::drawShield(mat4& proj, mat4& view) {
+void ofApp::drawShield(Light& light, mat4& proj, mat4& view) {
 
 	mat4 model = translate(vec3(0.0, 0.75f, 0.0f)) * rotationMatrix;
 	mat4 mvp = proj * view * model;
 	mat3 normalMatrix = transpose(inverse(mat3(model)));
 
-	ofShader& shader = diffuseShader;
+	ofShader& shader = light.isPointLight() ? pointLightShieldShader : dirLightShieldShader;
+
 	shader.begin();
+	light.apply(shader);
 	shader.setUniformMatrix4f("model", model);
 	shader.setUniformMatrix4f("mvp", mvp);
 	shader.setUniformMatrix3f("normal", normalMatrix);
@@ -144,27 +146,6 @@ void ofApp::drawShield(mat4& proj, mat4& view) {
 	shader.setUniformTexture("envMap", cubemap.getTexture(), 3);
 	shader.setUniform3f("cameraPos", cam.pos);
 	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
-
-	shader.setUniform3f("directionalLights[0].direction", getLightDirection(dirLights[0]));
-	shader.setUniform3f("directionalLights[0].color", getLightColor(dirLights[0]));
-
-	shader.setUniform3f("pointLights[0].position", pointLights[0].position);
-	shader.setUniform3f("pointLights[0].color", getLightColor(pointLights[0]));
-	shader.setUniform1f("pointLights[0].radius", pointLights[0].radius);
-
-	shader.setUniform3f("pointLights[1].position", pointLights[1].position);
-	shader.setUniform3f("pointLights[1].color", getLightColor(pointLights[1]));
-	shader.setUniform1f("pointLights[1].radius", pointLights[1].radius);
-
-	shader.setUniform3f("spotLights[0].position", spotLights[0].position);
-	shader.setUniform3f("spotLights[0].direction", spotLights[0].direction);
-	shader.setUniform3f("spotLights[0].color", getLightColor(spotLights[0]));
-	shader.setUniform1f("spotLights[0].cutOff", spotLights[0].cutOff);
-
-	shader.setUniform3f("spotLights[1].position", spotLights[1].position);
-	shader.setUniform3f("spotLights[1].direction", spotLights[1].direction);
-	shader.setUniform3f("spotLights[1].color", getLightColor(spotLights[1]));
-	shader.setUniform1f("spotLights[1].cutOff", spotLights[1].cutOff);
 
 	shieldMesh.draw();
 	shader.end();

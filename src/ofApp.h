@@ -99,11 +99,17 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		void drawWater(glm::mat4& proj, glm::mat4& view);
-		void drawShield(glm::mat4& proj, glm::mat4& view);
+		void drawShield(Light&, glm::mat4& proj, glm::mat4& view);
 		void drawCube(glm::mat4& proj, glm::mat4& view);
 		void drawSkybox(glm::mat4& proj, glm::mat4& view);
 		
 		DirectionalLight dirLights[1];
 		PointLight pointLights[2];
 		SpotLight spotLights[2];
+
+		ofShader dirLightShieldShader;
+		ofShader pointLightShieldShader;
+
+		ofShader dirLightShaders[2];
+		ofShader pointLightShaders[2];
 };
