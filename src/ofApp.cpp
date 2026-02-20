@@ -79,7 +79,7 @@ glm::vec3 getLightColor(SpotLight& l)
 	return l.color * l.intensity;
 }
 
-void ofApp::drawWater(mat4& proj, mat4& view) {
+void ofApp::drawWater(Light& light, mat4& proj, mat4& view) {
 	static float t = 0.0f;
 	t += ofGetLastFrameTime();
 
@@ -89,7 +89,8 @@ void ofApp::drawWater(mat4& proj, mat4& view) {
 	mat4 mvp = proj * view * model;
 	mat3 normalMatrix = transpose(inverse(mat3(model)));
 
-	ofShader& shader = waterShader;
+	ofShader& shader = light.isPointLight() ? pointLightWaterShader : dirLightWaterShader;
+
 	shader.begin();
 	shader.setUniformMatrix4f("model", model);
 	shader.setUniformMatrix4f("mvp", mvp);
@@ -100,27 +101,6 @@ void ofApp::drawWater(mat4& proj, mat4& view) {
 	shader.setUniform1f("time", t);
 	shader.setUniform3f("ambientCol", vec3(0.0, 0.0, 0.0));
 	shader.setUniform3f("cameraPos", cam.pos);
-
-	shader.setUniform3f("directionalLights[0].direction", getLightDirection(dirLights[0]));
-	shader.setUniform3f("directionalLights[0].color", getLightColor(dirLights[0]));
-
-	shader.setUniform3f("pointLights[0].position", pointLights[0].position);
-	shader.setUniform3f("pointLights[0].color", getLightColor(pointLights[0]));
-	shader.setUniform1f("pointLights[0].radius", pointLights[0].radius);
-
-	shader.setUniform3f("pointLights[1].position", pointLights[1].position);
-	shader.setUniform3f("pointLights[1].color", getLightColor(pointLights[1]));
-	shader.setUniform1f("pointLights[1].radius", pointLights[1].radius);
-
-	shader.setUniform3f("spotLights[0].position", spotLights[0].position);
-	shader.setUniform3f("spotLights[0].direction", spotLights[0].direction);
-	shader.setUniform3f("spotLights[0].color", getLightColor(spotLights[0]));
-	shader.setUniform1f("spotLights[0].cutOff", spotLights[0].cutOff);
-
-	shader.setUniform3f("spotLights[1].position", spotLights[1].position);
-	shader.setUniform3f("spotLights[1].direction", spotLights[1].direction);
-	shader.setUniform3f("spotLights[1].color", getLightColor(spotLights[1]));
-	shader.setUniform1f("spotLights[1].cutOff", spotLights[1].cutOff);
 
 	planeMesh.draw();
 	shader.end();
@@ -279,8 +259,8 @@ void ofApp::draw(){
 	spotLights[1].direction = vec3(0, 0, -1);
 	spotLights[1].cutOff = glm::cos(glm::radians(15.0f));
 
-	drawShield(proj, view);
-	drawWater(proj, view);
+	//drawShield(proj, view);
+	//drawWater(proj, view);
 	drawSkybox(proj, view);
 }
 
