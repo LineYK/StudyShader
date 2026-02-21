@@ -182,8 +182,9 @@ void ofApp::setup(){
 	waterNrm.load("water_nrm.png");
 	waterNrm.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
-	diffuseShader.load("mesh.vert", "multiLight.frag");
-	waterShader.load("water.vert", "multiLightWater.frag");
+	pointLightShaders[0].load("mesh.vert", "PointLight.frag");
+	pointLightShaders[1].load("mesh.vert", "PointLightWater.frag");
+
 
 	cubeMesh.load("cube.ply");
 	cubemapShader.load("cubemap.vert", "cubemap.frag");
@@ -204,6 +205,35 @@ void ofApp::setup(){
 
 	cam.pos = vec3(0, 0.75f, 1);
 	cam.fov = radians(90.0f);
+
+	PointLight pl0;
+	pl0.color = vec3(1, 0, 0);
+	pl0.radius = 1.0f;
+	pl0.position = vec3(-0.5, 0.35, 0.25);
+	pl0.intensity = 3.0;
+
+	pointLights.push_back(pl0);
+
+	PointLight pl1;
+	pl1.color = vec3(0, 1, 0);
+	pl1.radius = 1.0f;
+	pl1.position = vec3(0.5, 0.35, 0.25);
+	pl1.intensity = 3.0;
+
+	pointLights.push_back(pl1);
+
+	PointLight pl2;
+	pl2.color = vec3(0, 0, 1);
+	pl2.radius = 1.0f;
+	pl2.position = vec3(0.0, 0.7, 0.25);
+	pl2.intensity = 3.0;
+
+	pointLights.push_back(pl2);
+
+	dirLight.color = vec3(1, 1, 0);
+	dirLight.intensity = 0.25f;
+	dirLight.direction = vec3(0, 0, -1);
+
 }
 
 //--------------------------------------------------------------

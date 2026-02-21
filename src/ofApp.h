@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxEasyCubemap.h"
+#include <vector>
+
+using namespace std;
 
 struct CameraData {
 	glm::vec3 pos;
@@ -115,4 +118,8 @@ class ofApp : public ofBaseApp{
 
 		ofShader dirLightShaders[2];
 		ofShader pointLightShaders[2];
+
+		DirectionalLight dirLight;
+		vector<PointLight> pointLights;
+
 };
