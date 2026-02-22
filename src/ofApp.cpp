@@ -79,6 +79,18 @@ glm::vec3 getLightColor(SpotLight& l)
 	return l.color * l.intensity;
 }
 
+void ofApp::beginRenderPointLights() {
+	ofEnableAlphaBlending();
+	ofEnableBlendMode(ofBlendMode::OF_BLENDMODE_ADD);
+	glDepthFunc(GL_LEQUAL);
+}
+
+void ofApp::endRenderPointLights() {
+	ofDisableAlphaBlending();
+	ofDisableBlendMode();
+	glDepthFunc(GL_LESS);
+}
+
 void ofApp::drawWater(Light& light, mat4& proj, mat4& view) {
 	static float t = 0.0f;
 	t += ofGetLastFrameTime();
@@ -263,35 +275,18 @@ void ofApp::draw(){
 	mat4 view = inverse(translate(cam.pos));
 	mat4 proj = perspective(cam.fov, aspect, 0.1f, 10.0f);
 
-	dirLights[0].color = vec3(1, 1, 0);
-	dirLights[0].intensity = 1.0f;
-	dirLights[0].direction = vec3(1, -1, -1);
-
-	pointLights[0].color = vec3(1, 0, 0);
-	pointLights[0].radius = 1.0f;
-	pointLights[0].position = vec3(-0.5, 0.5, 0.25);
-	pointLights[0].intensity = 1.0;
-
-	pointLights[1].color = vec3(0, 1, 0);
-	pointLights[1].radius = 1.0f;
-	pointLights[1].position = vec3(0.5, 0.5, 0.25);
-	pointLights[1].intensity = 1.0;
-
-	spotLights[0].color = vec3(0, 0, 1);
-	spotLights[0].position = cam.pos + vec3(0.0, 0.5, 0);
-	spotLights[0].intensity = 1.0;
-	spotLights[0].direction = vec3(0, 0, -1);
-	spotLights[0].cutOff = glm::cos(glm::radians(35.0f));
-
-	spotLights[1].color = vec3(0, 1, 1);
-	spotLights[1].position = cam.pos + vec3(0.0, -0.5, 0);
-	spotLights[1].intensity = 1.5;
-	spotLights[1].direction = vec3(0, 0, -1);
-	spotLights[1].cutOff = glm::cos(glm::radians(15.0f));
-
-	//drawShield(proj, view);
-	//drawWater(proj, view);
 	drawSkybox(proj, view);
+
+	drawWater(dirLight, proj, view);
+	drawShield(dirLight, proj, view);
+
+	beginRenderPointLights();
+	for (auto &pl : pointLights) {
+		drawShield(pl, proj, view);
+		drawWater(pl, proj, view);
+	}
+	endRenderPointLights();
+	
 }
 
 //--------------------------------------------------------------

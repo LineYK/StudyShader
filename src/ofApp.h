@@ -105,6 +105,9 @@ class ofApp : public ofBaseApp{
 		void drawShield(Light&, glm::mat4& proj, glm::mat4& view);
 		void drawCube(glm::mat4& proj, glm::mat4& view);
 		void drawSkybox(glm::mat4& proj, glm::mat4& view);
+
+		void beginRenderPointLights();
+		void endRenderPointLights();
 		
 		DirectionalLight dirLights[1];
 		PointLight pointLights[2];
