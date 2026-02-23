@@ -206,6 +206,8 @@
     <None Include="bin\data\cubemap.frag" />
     <None Include="bin\data\cubemap.vert" />
     <None Include="bin\data\diffuse.frag" />
+    <None Include="bin\data\dirLight.frag" />
+    <None Include="bin\data\dirLightWater.frag" />
     <None Include="bin\data\mesh.vert" />
     <None Include="bin\data\multiLight.frag" />
     <None Include="bin\data\multiLightWater.frag" />

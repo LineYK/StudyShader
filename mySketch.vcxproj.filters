@@ -58,6 +58,8 @@
     <None Include="bin\data\spotLightWater.frag" />
     <None Include="bin\data\multiLight.frag" />
     <None Include="bin\data\multiLightWater.frag" />
+    <None Include="bin\data\dirLight.frag" />
+    <None Include="bin\data\dirLightWater.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="bin\data\cube_back.jpg" />
