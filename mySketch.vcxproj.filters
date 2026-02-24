@@ -52,8 +52,8 @@
     <None Include="bin\data\shield.ply" />
     <None Include="bin\data\skybox.vert" />
     <None Include="bin\data\skybox.frag" />
-    <None Include="bin\data\PointLight.frag" />
-    <None Include="bin\data\PointLightWater.frag" />
+    <None Include="bin\data\pointLight.frag" />
+    <None Include="bin\data\pointLightWater.frag" />
     <None Include="bin\data\spotLight.frag" />
     <None Include="bin\data\spotLightWater.frag" />
     <None Include="bin\data\multiLight.frag" />
