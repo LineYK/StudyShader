@@ -109,20 +109,12 @@ class ofApp : public ofBaseApp{
 		void beginRenderPointLights();
 		void endRenderPointLights();
 		
-		DirectionalLight dirLights[1];
-		PointLight pointLights[2];
-		SpotLight spotLights[2];
-
 		ofShader dirLightShieldShader;
 		ofShader pointLightShieldShader;
 
 		ofShader dirLightWaterShader;
 		ofShader pointLightWaterShader;
 
-		ofShader dirLightShaders[2];
-		ofShader pointLightShaders[2];
-
-		DirectionalLight dirLight;
 		vector<PointLight> pointLights;
 
 };

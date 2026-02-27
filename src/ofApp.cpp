@@ -104,6 +104,7 @@ void ofApp::drawWater(Light& light, mat4& proj, mat4& view) {
 	ofShader& shader = light.isPointLight() ? pointLightWaterShader : dirLightWaterShader;
 
 	shader.begin();
+	light.apply(shader);
 	shader.setUniformMatrix4f("model", model);
 	shader.setUniformMatrix4f("mvp", mvp);
 	shader.setUniformMatrix3f("normal", normalMatrix);
@@ -194,8 +195,11 @@ void ofApp::setup(){
 	waterNrm.load("water_nrm.png");
 	waterNrm.getTexture().setTextureWrap(GL_REPEAT, GL_REPEAT);
 
-	pointLightShaders[0].load("mesh.vert", "PointLight.frag");
-	pointLightShaders[1].load("mesh.vert", "PointLightWater.frag");
+	dirLightShieldShader.load("mesh.vert", "dirLight.frag");
+	pointLightShieldShader.load("mesh.vert", "pointLight.frag");
+
+	dirLightWaterShader.load("water.vert", "dirLightWater.frag");
+	pointLightWaterShader.load("water.vert", "pointLightWater.frag");
 
 
 	cubeMesh.load("cube.ply");
